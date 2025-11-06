@@ -1,0 +1,3 @@
+<ng-container *ngIf="assessment()?.aiAssessmentUrl">
+<iframe allow="microphone; speech-recognition"  class="w-full h-full rounded-lg border-0" [src]="assessment()?.aiAssessmentUrl | trustHtml:'url'"></iframe>
+</ng-container>

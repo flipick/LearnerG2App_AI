@@ -1,0 +1,9 @@
+.correct {
+    @apply bg-green-300 text-green-700 border-green-500;
+}
+.wrong{
+    @apply bg-red-300 text-red-500 border-red-500;
+}
+.not-sure{
+   color:transparent;
+}

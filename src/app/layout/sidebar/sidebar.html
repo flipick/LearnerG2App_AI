@@ -1,0 +1,30 @@
+<nav id="sidebar"
+  [class.-translate-x-full]="(open$ | async)"
+  class="fixed top-[60px] left-0 w-[250px] h-[calc(100vh-60px)] bg-white dark:bg-[#2d2d2d] border-r border-[#aaabab] dark:border-[#545454] z-40 transition-transform">
+  <div class="p-4 flex flex-col gap-2">
+    <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="sidebar-item active">
+      <span class="sidebar-icon">📊</span>
+      <span class="sidebar-text">Dashboard</span>
+    </a>
+    <a routerLink="/courses" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="sidebar-item">
+      <span class="sidebar-icon">📚</span>
+      <span class="sidebar-text">Courses</span>
+    </a>
+    <a routerLink="/assessments" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="sidebar-item">
+      <span class="sidebar-icon">📝</span>
+      <span class="sidebar-text">Assessments</span>
+    </a>
+    <a routerLink="/chatbot" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="sidebar-item">
+      <span class="sidebar-icon">🤖</span>
+      <span class="sidebar-text">Chatbot</span>
+    </a>
+    <a routerLink="/achievements" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="sidebar-item">
+      <span class="sidebar-icon">🏅</span>
+      <span class="sidebar-text">Achievements</span>
+    </a>
+    <a routerLink="/profile" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="sidebar-item">
+      <span class="sidebar-icon">👤</span>
+      <span class="sidebar-text">Profile</span>
+    </a>
+  </div>
+</nav>

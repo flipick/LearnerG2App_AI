@@ -1,0 +1,11 @@
+<app-header></app-header>
+<app-sidebar></app-sidebar>
+<main  
+   [ngClass]="{
+    'ml-0': sidebarOpen$ | async,
+    'ml-[250px]': !(sidebarOpen$ | async)
+  }"
+  class="mt-[60px] p-4 md:p-6 flex-1 overflow-y-auto h-[calc(100vh-60px)]">
+  <router-outlet></router-outlet>
+</main>
+<app-loader></app-loader>

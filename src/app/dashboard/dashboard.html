@@ -1,0 +1,58 @@
+<div id="dashboardView" class="w-full">
+    <!-- Header -->
+    <div class="mb-8">
+      <h2 id="dashboardGreeting" class="text-2xl font-semibold text-black dark:text-white">
+        
+      </h2>
+      <p id="dashboardProgress" class="text-[#7b8fa2] dark:text-[#b3c0cd] mt-1">
+        
+      </p>
+    </div>
+  
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+      <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg p-6 text-center shadow-sm">
+        <h3 id="totalCourses" class="text-3xl font-bold text-black dark:text-white mb-1"></h3>
+        <p class="text-[#7b8fa2] dark:text-[#b3c0cd] text-sm">Total Courses</p>
+      </div>
+      <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg p-6 text-center shadow-sm">
+        <h3 id="completedCourses" class="text-3xl font-bold text-black dark:text-white mb-1"></h3>
+        <p class="text-[#7b8fa2] dark:text-[#b3c0cd] text-sm">Completed Courses</p>
+      </div>
+      <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg p-6 text-center shadow-sm">
+        <h3 id="earnedBadges" class="text-3xl font-bold text-black dark:text-white mb-1"></h3>
+        <p class="text-[#7b8fa2] dark:text-[#b3c0cd] text-sm">Badges Earned</p>
+      </div>
+    </div>
+  
+    <!-- Charts -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
+      <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg p-6 shadow-sm">
+        <h3 class="text-lg font-semibold text-black dark:text-white mb-4">Course Progress</h3>
+        <div class="relative h-[300px]">
+          <canvas id="courseProgressChart" class="w-full h-full"></canvas>
+        </div>
+      </div>
+      <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg p-6 shadow-sm">
+        <h3 class="text-lg font-semibold text-black dark:text-white mb-4">Assessment Scores</h3>
+        <div class="relative h-[300px]">
+          <canvas id="assessmentScoresChart" class="w-full h-full"></canvas>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Actions -->
+    <div class="flex flex-col sm:flex-row gap-4">
+      <button (click)="redirectToCourses();"
+        id="goToCoursesBtn"
+        class="bg-[#444ce7] text-white px-6 py-2 rounded-md text-sm font-medium hover:bg-[#3730a3] active:bg-[#312e81] transition">
+        Go to Courses
+      </button>
+      <button (click)="redirectToAssessments();"
+        id="takeAssessmentBtn"
+        class="bg-white dark:bg-[#2d2d2d] text-black dark:text-white border border-[#aaabab] dark:border-[#545454] px-6 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-[#3a3a3a] transition">
+        Take an Assessment
+      </button>
+    </div>
+  </div>
+  

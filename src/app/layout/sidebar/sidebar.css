@@ -1,0 +1,20 @@
+.sidebar-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-md text-black dark:text-white no-underline transition-colors;
+  }
+  
+  .sidebar-item:hover {
+    @apply bg-[rgba(94,82,64,0.12)] dark:bg-[rgba(119,124,124,0.15)];
+  }
+  
+  .sidebar-item.active {
+    @apply bg-[#444ce7] text-white;
+  }
+  
+  .sidebar-icon {
+    @apply text-lg;
+  }
+  
+  .sidebar-text {
+    @apply font-medium;
+  }
+  

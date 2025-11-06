@@ -1,0 +1,72 @@
+<div id="coursesView" class="w-full">
+    <!-- Header -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold text-black dark:text-white">My Courses</h2>
+      <p class="text-[#7b8fa2] dark:text-[#b3c0cd] mt-2">Continue your learning journey</p>
+    </div>
+  
+    <!-- Courses Grid -->
+    <div *ngIf="courses().length" id="coursesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      
+      <!-- Course 1 -->
+      <div *ngFor="let course of courses()" (click)="openCourse(course);" class="grid grid-rows-[auto_1fr] bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg shadow-sm overflow-hidden cursor-pointer">
+        <div class="relative aspect-video bg-neutral-300">
+          <img [src]="course.thumbnailUrl"
+               alt="{{course.courseName}}"
+               class="absolute inset-0 w-full h-full max-w-full max-h-full m-auto"/>
+        </div>
+        <div class="grid grid-rows-[1fr_auto] gap-4 p-4">
+          <h3 class="text-lg font-semibold text-black dark:text-white mb-1">{{course.courseName}}</h3>
+          <div>
+            <!-- <span class="inline-block text-xs px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full mb-2">{{course.status | capitalize}}</span> -->
+            <span class="inline-block text-xs px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full mb-2">Expiration Date: {{course.formattedExpirationDate}}</span>
+            <div class="w-full h-2 bg-[#e0e0e0] dark:bg-[#444] rounded overflow-hidden mb-1">
+              <div class="h-full bg-[#444ce7]" [style.width.%]="course?.completionPercentage ?? 0"></div>
+            </div>           
+          </div>
+           <div class="flex items-center">
+              <div class="ml-auto">
+                <button type="button" class="text-sm px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                    (click)="openCourse(course);">
+                  Launch
+                </button>
+              </div>
+            </div>
+        </div>
+      </div>
+  
+      <!-- Course 2 -->
+      <!-- <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg shadow-sm overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1559027615-c913d3ae5e0d?auto=format&fit=crop&w=600&q=60"
+             alt="Data Science Fundamentals"
+             class="w-full h-[180px] object-cover" />
+        <div class="p-4">
+          <h3 class="text-lg font-semibold text-black dark:text-white mb-1">Data Science Fundamentals</h3>
+          <span class="inline-block text-xs px-2 py-1 bg-gray-200 text-gray-600 rounded-full mb-2">Not Started</span>
+          <div class="w-full h-2 bg-[#e0e0e0] dark:bg-[#444] rounded overflow-hidden mb-1">
+            <div class="h-full bg-[#444ce7]" style="width: 0%"></div>
+          </div>
+          <p class="text-sm text-[#7b8fa2] dark:text-[#b3c0cd]">0% complete</p>
+        </div>
+      </div> -->
+  
+      <!-- Course 3 -->
+      <!-- <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg shadow-sm overflow-hidden">
+        <img src="https://images.unsplash.com/photo-1516627149106-1ff5e000cbd1?auto=format&fit=crop&w=600&q=60"
+             alt="Leadership & Communication"
+             class="w-full h-[180px] object-cover" />
+        <div class="p-4">
+          <h3 class="text-lg font-semibold text-black dark:text-white mb-1">Leadership &amp; Communication</h3>
+          <span class="inline-block text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full mb-2">Completed</span>
+          <div class="w-full h-2 bg-[#e0e0e0] dark:bg-[#444] rounded overflow-hidden mb-1">
+            <div class="h-full bg-[#444ce7]" style="width: 100%"></div>
+          </div>
+          <p class="text-sm text-[#7b8fa2] dark:text-[#b3c0cd]">100% complete</p>
+        </div>
+      </div> -->
+  
+    </div>
+  </div>
+  <app-popup [hidden]="!popupConfig.isShowPopup" [isShowPopup]="popupConfig.isShowPopup" [config]="popupConfig" (CloseEvent)="closeCourse($event);" (CloseInnerPopupEvent)="closeCourse($event);">
+      <app-course-popup [hidden]="!isShowCoursePopup"></app-course-popup>    
+  </app-popup>

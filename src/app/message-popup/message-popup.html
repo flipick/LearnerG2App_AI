@@ -1,0 +1,42 @@
+<!-- Modal -->
+<div id="messageModal" 
+     class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  
+  <!-- Modal Content -->
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden">
+    
+    <!-- Modal Header -->
+    <header>      
+      <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+        <h3 *ngIf="message()!=null" id="modalMessageTitle" class="text-lg font-semibold text-gray-800 dark:text-gray-100">
+         Warning
+        </h3>
+      </div>
+    </header>
+
+    <!-- Modal Body -->
+    <section class="p-6 space-y-6">
+      <div class="grid gap-4">
+        <!-- Assessment Content -->
+        <div id="assessmentContent">          
+           <span>{{message()}}</span>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between">
+         
+          <div class="flex items-center gap-2">
+           
+            <button type="button" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold"
+                    (click)="close();">
+              Ok
+            </button>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
