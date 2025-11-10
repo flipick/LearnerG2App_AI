@@ -1,0 +1,337 @@
+<div class="ai-assistant-container">
+  <!-- Header with title and model selector -->
+  <div class="assistant-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h2>AI Assistant</h2>
+        <p>Ask anything or get help with your courses</p>
+      </div>
+      
+      <!-- AI Model selector -->
+      <div class="header-actions">
+        <!-- Settings button -->
+        <button id="settings-button" (click)="toggleSettings()" class="action-button" title="Settings">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
+          </svg>
+        </button>
+        
+        <!-- Model selector dropdown -->
+        <div class="model-selector">
+          <button type="button" id="model-menu-button" class="model-button" (click)="toggleModelDropdown($event)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+              <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+            </svg>
+            <span>AI Model</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 20 20" fill="currentColor" class="caret-icon">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          <div id="model-dropdown-menu" class="model-dropdown" style="display: none;">
+            <div class="dropdown-content">
+              <button 
+                *ngFor="let model of modelOptions()" 
+                (click)="changeModel(model.id)" 
+                class="model-option" 
+                [class.selected]="selectedModel() === model.id"
+              >
+                <div class="model-option-content">
+                  <div class="model-name">{{ model.name }}</div>
+                  <div class="model-description">{{ model.description }}</div>
+                </div>
+              </button>
+              <div class="model-divider"></div>
+              <button (click)="clearChat()" class="action-option danger">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+                <span>Clear conversation</span>
+              </button>
+              <button (click)="downloadChatHistory()" class="action-option">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                <span>Download chat</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Settings panel (hidden by default) -->
+  <div id="settings-panel" class="settings-panel" *ngIf="showSettings()">
+    <h3>Settings</h3>
+    <div class="settings-section">
+      <h4>AI Model</h4>
+      <div class="settings-option" *ngFor="let model of modelOptions()">
+        <label>
+          <input 
+            type="radio" 
+            name="aiModel" 
+            [value]="model.id" 
+            [checked]="selectedModel() === model.id"
+            (change)="changeModel(model.id)"
+          />
+          <div class="option-details">
+            <span class="option-name">{{ model.name }}</span>
+            <span class="option-description">{{ model.description }}</span>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Messages Container -->
+  <div #chatContainer id="chat-container" class="chat-container">
+    <!-- Date headers and messages -->
+    <ng-container *ngFor="let message of chatHistory(); let i = index;">
+      <!-- Date separator -->
+      <div class="date-separator" *ngIf="shouldShowDateHeader(i)">
+        <span>{{ formatDate(message.timestamp) }}</span>
+      </div>
+      
+      <!-- Message -->
+      <div class="message-row" 
+          [class.user]="message.type === 'user'" 
+          [class.assistant]="message.type === 'assistant'"
+          [class.grouped]="shouldGroupWithPrevious(i)">
+        
+        <!-- Assistant avatar -->
+        <div class="avatar assistant-avatar" *ngIf="message.type === 'assistant' && !shouldGroupWithPrevious(i)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        
+        <!-- Message content -->
+        <div class="message-content" [class.with-attachments]="message.attachments?.length">
+          <!-- Model label -->
+          <div class="model-label" *ngIf="message.type === 'assistant' && message.model && !shouldGroupWithPrevious(i)">
+            {{ getModelNameById(message.model) }}
+          </div>
+          
+          <!-- Attachments -->
+          <div class="attachments-container" *ngIf="message.attachments?.length">
+            <div class="attachment" *ngFor="let attachment of message.attachments">
+              <!-- Image attachment preview -->
+              <div class="attachment-preview" *ngIf="attachment.type.startsWith('image/')">
+                <img [src]="attachment.url" [alt]="attachment.name" />
+              </div>
+              
+              <!-- Document attachment -->
+              <div class="attachment-icon" *ngIf="!attachment.type.startsWith('image/')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" />
+                </svg>
+              </div>
+              <div class="attachment-info">
+                <div class="attachment-name">{{ attachment.name }}</div>
+                <div class="attachment-size">{{ (attachment.size / 1024).toFixed(1) }} KB</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Message bubble -->
+          <div class="message-bubble" 
+              [class.assistant-message]="message.type === 'assistant'" 
+              [class.user-message]="message.type === 'user'"
+              [class.code-message]="message.isCode">
+            
+            <!-- Loading animation for sending message -->
+            <div class="loading-dots" *ngIf="message.status === 'sending'">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+            
+            <!-- Message text content -->
+            <div class="message-text" *ngIf="message.status !== 'sending'" [innerHTML]="message.isCode ? formatCode(message.content) : message.content"></div>
+            
+            <!-- Error indicator -->
+            <div class="message-error" *ngIf="message.status === 'error'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+              <span>Error sending message. Tap to retry.</span>
+            </div>
+            
+            <!-- Message actions -->
+            <div class="message-actions" *ngIf="message.status === 'sent'">
+              <button class="action-icon" (click)="copyToClipboard(message.content)" title="Copy to clipboard">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                  <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Message timestamp -->
+          <div class="message-time" [class.user-time]="message.type === 'user'">
+            {{ formatTime(message.timestamp) }}
+          </div>
+        </div>
+        
+        <!-- User avatar -->
+        <div class="avatar user-avatar" *ngIf="message.type === 'user' && !shouldGroupWithPrevious(i)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+    </ng-container>
+    
+    <!-- Loading indicator -->
+    <div class="message-row assistant" *ngIf="isLoading()">
+      <div class="avatar assistant-avatar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 0l-3 3a1 1 0 001.414 1.414L9 9.414V13a1 1 0 102 0V9.414l1.293 1.293a1 1 0 001.414-1.414z" clip-rule="evenodd" />
+        </svg>
+      </div>
+      <div class="message-content">
+        <div class="message-bubble assistant-message">
+          <div class="loading-dots">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Error message -->
+    <div class="error-message" *ngIf="errorMessage()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+      </svg>
+      <span>{{ errorMessage() }}</span>
+      <button class="dismiss-error" (click)="errorMessage.set(null)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Input Area -->
+  <div class="input-area">
+    <!-- Selected files display -->
+    <div class="selected-files" *ngIf="selectedFiles().length > 0">
+      <div class="selected-file" *ngFor="let file of selectedFiles(); let i = index">
+        <div class="file-icon" [ngClass]="{'image-file': file.type.startsWith('image/')}">
+          <svg *ngIf="!file.type.startsWith('image/')" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="file-name">{{ file.name }}</div>
+        <button class="remove-file" (click)="removeFile(i)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    
+    <!-- Input form -->
+    <form (submit)="$event.preventDefault(); sendMessage();" class="input-form">
+      <!-- File input -->
+      <input 
+        #fileInput
+        type="file" 
+        id="file-input" 
+        class="file-input" 
+        (change)="handleFileSelection($event)"
+        multiple
+        accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/json,text/javascript,text/html,text/css"
+      />
+      
+      <!-- File attachment button -->
+      <button 
+        type="button" 
+        class="attachment-button" 
+        (click)="fileInput.click()" 
+        [disabled]="isLoading()"
+        title="Attach file"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a3 3 0 00-3 3v4a5 5 0 0010 0V7a1 1 0 112 0v4a7 7 0 11-14 0V7a5 5 0 0110 0v4a3 3 0 11-6 0V7a1 1 0 012 0v4a1 1 0 102 0V7a3 3 0 00-3-3z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      
+      <!-- Emoji button -->
+      <button 
+        type="button" 
+        class="emoji-button" 
+        (click)="toggleEmojiPicker($event)" 
+        [disabled]="isLoading()"
+        title="Add emoji"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      
+      <!-- Emoji picker -->
+      <div class="emoji-picker" *ngIf="showEmojiPicker()">
+        <div class="emoji-grid">
+          <button 
+            type="button" 
+            *ngFor="let emoji of ['😊', '👍', '❤️', '🎉', '🤔', '😂', '🙏', '👏', '🔥', '⭐', '✅', '🚀', '💡', '📝', '👀', '💪', '🙌', '👋', '🤝', '👌']" 
+            class="emoji"
+            (click)="addEmoji(emoji)"
+          >
+            {{ emoji }}
+          </button>
+        </div>
+      </div>
+      
+      <!-- Text input -->
+      <input
+        type="text"
+        [(ngModel)]="inputText"
+        name="message"
+        [placeholder]="getPlaceholderText()"
+        class="input-field"
+        [class.listening]="isListening()"
+        [disabled]="isLoading()"
+      />
+      
+      <!-- Voice input button (if supported) -->
+      <button 
+        *ngIf="speechSupported" 
+        type="button" 
+        class="voice-button" 
+        [class.active]="isListening()" 
+        (click)="toggleVoiceInput()"
+        [disabled]="isLoading()"
+        title="Voice input"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clip-rule="evenodd" />
+        </svg>
+      </button>
+      
+      <!-- Send button -->
+      <button
+        type="submit"
+        class="send-button"
+        [disabled]="isLoading() || (!inputText().trim() && selectedFiles().length === 0)"
+        title="Send message"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+        </svg>
+      </button>
+    </form>
+    
+    <!-- Input footer -->
+    <div class="input-footer">
+      <div class="powered-by">
+        Powered by {{ selectedModel() === 'advanced' ? 'GPT-4' : selectedModel() === 'code' ? 'GPT-4 for Code' : 'AI Assistant' }}
+      </div>
+    </div>
+  </div>
+</div>

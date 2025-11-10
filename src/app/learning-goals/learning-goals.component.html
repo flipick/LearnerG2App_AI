@@ -1,0 +1,236 @@
+<div class="goals-container">
+  <div class="goals-header">
+    <h2 class="goals-title">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="header-icon">
+        <path fill-rule="evenodd" d="M3 6a3 3 0 013-3h12a3 3 0 013 3v12a3 3 0 01-3 3H6a3 3 0 01-3-3V6zm4.5 7.5a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75zm3.75-1.5a.75.75 0 00-1.5 0v4.5a.75.75 0 001.5 0V12zm2.25-3a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0V9.75A.75.75 0 0113.5 9zm3.75-1.5a.75.75 0 00-1.5 0v9a.75.75 0 001.5 0v-9z" clip-rule="evenodd" />
+      </svg>
+      Learning Goals
+    </h2>
+    <p class="goals-subtitle">Set your learning goals to get personalized recommendations and an optimized learning path.</p>
+  </div>
+
+  <div class="section-container">
+    <div class="section-header">
+      <h3 class="section-title">Career Objectives</h3>
+      <p class="section-description">What are your professional development goals?</p>
+    </div>
+
+    <div class="goals-form">
+      <div class="form-group">
+        <label for="careerPath">Career Path</label>
+        <select id="careerPath" [(ngModel)]="goals.careerPath" class="form-select">
+          <option value="" disabled>Select a career path</option>
+          <option *ngFor="let path of careerPaths" [value]="path.id">{{path.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="targetRole">Target Role</label>
+        <select id="targetRole" [(ngModel)]="goals.targetRole" class="form-select">
+          <option value="" disabled>Select a target role</option>
+          <option *ngFor="let role of targetRoles" [value]="role.id">{{role.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="timeframe">Timeframe</label>
+        <select id="timeframe" [(ngModel)]="goals.timeframe" class="form-select">
+          <option value="" disabled>Select a timeframe</option>
+          <option value="0-3">0-3 months</option>
+          <option value="3-6">3-6 months</option>
+          <option value="6-12">6-12 months</option>
+          <option value="12+">12+ months</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" [(ngModel)]="goals.isJobSearching">
+          <span>I'm actively searching for a job in this field</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-container">
+    <div class="section-header">
+      <h3 class="section-title">Skills Development</h3>
+      <p class="section-description">Which skills would you like to develop?</p>
+    </div>
+
+    <div class="skills-container">
+      <div class="skills-selection">
+        <div class="form-group search-group">
+          <input type="text" placeholder="Search for skills..." class="search-input" [(ngModel)]="skillSearch" (keyup)="filterSkills()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="search-icon">
+            <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clip-rule="evenodd" />
+          </svg>
+        </div>
+
+        <div class="skills-grid">
+          <div *ngFor="let skill of filteredSkills" class="skill-item" 
+               [class.selected]="isSkillSelected(skill.id)"
+               (click)="toggleSkill(skill)">
+            <div class="skill-icon" [style.backgroundColor]="skill.iconColor">
+              <svg *ngIf="skill.category === 'technical'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon">
+                <path fill-rule="evenodd" d="M14.447 3.027a.75.75 0 01.527.92l-4.5 16.5a.75.75 0 01-1.448-.394l4.5-16.5a.75.75 0 01.921-.526zM16.72 6.22a.75.75 0 011.06 0l5.25 5.25a.75.75 0 010 1.06l-5.25 5.25a.75.75 0 11-1.06-1.06L21.44 12l-4.72-4.72a.75.75 0 010-1.06zm-9.44 0a.75.75 0 010 1.06L2.56 12l4.72 4.72a.75.75 0 11-1.06 1.06L.97 12.53a.75.75 0 010-1.06l5.25-5.25a.75.75 0 011.06 0z" clip-rule="evenodd" />
+              </svg>
+              <svg *ngIf="skill.category === 'soft'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon">
+                <path d="M4.5 6.375a4.125 4.125 0 118.25 0 4.125 4.125 0 01-8.25 0zM14.25 8.625a3.375 3.375 0 116.75 0 3.375 3.375 0 01-6.75 0zM1.5 19.125a7.125 7.125 0 0114.25 0v.003l-.001.119a.75.75 0 01-.363.63 13.067 13.067 0 01-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 01-.364-.63l-.001-.122zM17.25 19.128l-.001.144a2.25 2.25 0 01-.233.96 10.088 10.088 0 005.06-1.01.75.75 0 00.42-.643 4.875 4.875 0 00-6.957-4.611 8.586 8.586 0 011.71 5.157v.003z" />
+              </svg>
+              <svg *ngIf="skill.category === 'domain'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon">
+                <path d="M11.584 2.376a.75.75 0 01.832 0l9 6a.75.75 0 11-.832 1.248L12 3.901 3.416 9.624a.75.75 0 01-.832-1.248l9-6z" />
+                <path fill-rule="evenodd" d="M20.25 10.332v9.918H21a.75.75 0 010 1.5H3a.75.75 0 010-1.5h.75v-9.918a.75.75 0 01.634-.74A49.109 49.109 0 0112 9c2.59 0 5.134.202 7.616.592a.75.75 0 01.634.74zm-7.5 2.418a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75zm3-.75a.75.75 0 01.75.75v6.75a.75.75 0 01-1.5 0v-6.75a.75.75 0 01.75-.75zM9 12.75a.75.75 0 00-1.5 0v6.75a.75.75 0 001.5 0v-6.75z" clip-rule="evenodd" />
+                <path d="M12 7.875a1.125 1.125 0 100-2.25 1.125 1.125 0 000 2.25z" />
+              </svg>
+            </div>
+            <div class="skill-name">{{skill.name}}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="selected-skills">
+        <h4 class="selected-title">Selected Skills ({{selectedSkills.length}})</h4>
+        <div class="selected-list">
+          <div *ngFor="let skill of selectedSkills" class="selected-skill-item">
+            <div class="skill-tag">{{skill.name}}</div>
+            <button class="remove-btn" (click)="removeSkill(skill)">×</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-container">
+    <div class="section-header">
+      <h3 class="section-title">Learning Preferences</h3>
+      <p class="section-description">How do you prefer to learn?</p>
+    </div>
+
+    <div class="preferences-grid">
+      <div class="preference-group">
+        <label class="preference-label">Time Commitment</label>
+        <div class="preference-options">
+          <label class="option-label" [class.active]="goals.timeCommitment === 'low'">
+            <input type="radio" name="timeCommitment" [(ngModel)]="goals.timeCommitment" value="low">
+            <div class="option-content">
+              <div>Low</div>
+              <div class="option-detail">1-2 hrs/week</div>
+            </div>
+          </label>
+          <label class="option-label" [class.active]="goals.timeCommitment === 'medium'">
+            <input type="radio" name="timeCommitment" [(ngModel)]="goals.timeCommitment" value="medium">
+            <div class="option-content">
+              <div>Medium</div>
+              <div class="option-detail">3-5 hrs/week</div>
+            </div>
+          </label>
+          <label class="option-label" [class.active]="goals.timeCommitment === 'high'">
+            <input type="radio" name="timeCommitment" [(ngModel)]="goals.timeCommitment" value="high">
+            <div class="option-content">
+              <div>High</div>
+              <div class="option-detail">6+ hrs/week</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="preference-group">
+        <label class="preference-label">Learning Style</label>
+        <div class="preference-options">
+          <label class="option-label" [class.active]="goals.learningStyle === 'visual'">
+            <input type="radio" name="learningStyle" [(ngModel)]="goals.learningStyle" value="visual">
+            <div class="option-content">
+              <div>Visual</div>
+              <div class="option-detail">Videos, diagrams</div>
+            </div>
+          </label>
+          <label class="option-label" [class.active]="goals.learningStyle === 'reading'">
+            <input type="radio" name="learningStyle" [(ngModel)]="goals.learningStyle" value="reading">
+            <div class="option-content">
+              <div>Reading</div>
+              <div class="option-detail">Articles, books</div>
+            </div>
+          </label>
+          <label class="option-label" [class.active]="goals.learningStyle === 'interactive'">
+            <input type="radio" name="learningStyle" [(ngModel)]="goals.learningStyle" value="interactive">
+            <div class="option-content">
+              <div>Interactive</div>
+              <div class="option-detail">Exercises, quizzes</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="preference-group">
+        <label class="preference-label">Difficulty Level</label>
+        <div class="preference-options">
+          <label class="option-label" [class.active]="goals.difficultyLevel === 'beginner'">
+            <input type="radio" name="difficultyLevel" [(ngModel)]="goals.difficultyLevel" value="beginner">
+            <div class="option-content">
+              <div>Beginner</div>
+              <div class="option-detail">Fundamentals</div>
+            </div>
+          </label>
+          <label class="option-label" [class.active]="goals.difficultyLevel === 'intermediate'">
+            <input type="radio" name="difficultyLevel" [(ngModel)]="goals.difficultyLevel" value="intermediate">
+            <div class="option-content">
+              <div>Intermediate</div>
+              <div class="option-detail">Some experience</div>
+            </div>
+          </label>
+          <label class="option-label" [class.active]="goals.difficultyLevel === 'advanced'">
+            <input type="radio" name="difficultyLevel" [(ngModel)]="goals.difficultyLevel" value="advanced">
+            <div class="option-content">
+              <div>Advanced</div>
+              <div class="option-detail">Expert level</div>
+            </div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-container">
+    <div class="section-header">
+      <h3 class="section-title">Additional Information</h3>
+      <p class="section-description">Tell us more about your learning objectives</p>
+    </div>
+
+    <div class="goals-form">
+      <div class="form-group">
+        <label for="objective">Specific Learning Objectives</label>
+        <textarea id="objective" rows="3" [(ngModel)]="goals.objective" class="form-textarea" placeholder="Describe what you want to achieve with these courses..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" [(ngModel)]="goals.wantsCertifications">
+          <span>I'm interested in earning certifications</span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions-container">
+    <button class="btn-secondary" (click)="resetForm()">Reset</button>
+    <button class="btn-primary" (click)="saveGoals()" [disabled]="isSaving">
+      <span *ngIf="!isSaving">Save Learning Goals</span>
+      <span *ngIf="isSaving" class="spinner"></span>
+    </button>
+  </div>
+
+  <!-- Success notification -->
+  <div class="notification success" *ngIf="showSuccessNotification">
+    <div class="notification-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+      </svg>
+    </div>
+    <div class="notification-content">
+      <div class="notification-title">Success!</div>
+      <div class="notification-message">Your learning goals have been saved. Your personalized learning path will be updated shortly.</div>
+    </div>
+    <button class="notification-close" (click)="dismissNotification()">×</button>
+  </div>
+</div> 

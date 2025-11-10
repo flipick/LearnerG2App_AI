@@ -1,34 +1,53 @@
-<div id="assessmentsView" class="w-full">
-    <!-- Header -->
-    <div class="mb-8">
-      <h2 class="text-2xl font-semibold text-black dark:text-white">Assessments</h2>
-      <p class="text-[#7b8fa2] dark:text-[#b3c0cd] mt-2">Test your knowledge and skills</p>
-    </div>
-  
-    <!-- Assessment List -->
-    <div id="assessmentsList" class="space-y-4">
-      <!-- Assessment Card -->
-      <div (click)="openAssessment(assessment);"  *ngFor="let assessment of assessments()" class="cursor-pointer bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg shadow-sm p-4">
-        <div class="flex flex-col sm:flex-row justify-between gap-4">
-          <!-- Info Block -->
-          <div>
-    <h3 class="text-lg font-semibold text-black dark:text-white mb-1">{{assessment.assessmentTitle}}</h3>
-            <p class="text-sm text-[#7b8fa2] dark:text-[#b3c0cd]">Description: {{assessment.description}}</p>
+<div class="assessments-container">
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="page-title">Assessments</h1>
+    <p class="page-subtitle">Test your knowledge and skills</p>
+  </div>
+
+  <!-- Assessments List -->
+  <div *ngIf="assessments().length" class="assessments-list">
+    <!-- Assessment Card -->
+    <div *ngFor="let assessment of assessments()" (click)="openAssessment(assessment);" class="assessment-card">
+      <div class="assessment-header">
+        <h3 class="assessment-title">{{assessment.assessmentTitle}}</h3>
+        <span class="assessment-badge">{{assessment.status}}</span>
+      </div>
+      <div class="assessment-body">
+        <p class="assessment-description">Description: {{assessment.description}}</p>
+        <div class="assessment-details">
+          <div class="detail-item">
+            <span class="detail-label">Passing Score:</span>
+            <span class="detail-value">{{assessment.passingScore}}%</span>
           </div>
-  
-          <!-- Meta Block -->
-          <div class="flex flex-col sm:items-end gap-1">
-            <span class="inline-block text-xs px-2 py-1 bg-gray-200 text-gray-600 rounded-full w-fit">{{assessment.status}}</span>
-            <span class="text-sm text-[#7b8fa2] dark:text-[#b3c0cd]">Passing Score: {{assessment.passingScore}}%</span>
-            <span class="text-sm text-[#7b8fa2] dark:text-[#b3c0cd]">Expiration Date: {{assessment.formattedExpirationDate}}</span>
+          <div class="detail-item">
+            <span class="detail-label">Expiration Date:</span>
+            <span class="detail-value">{{assessment.formattedExpirationDate}}</span>
           </div>
         </div>
+      </div>
+      <div class="assessment-footer">
+        <button class="btn btn-primary">Start Assessment</button>
       </div>
     </div>
   </div>
   
+  <!-- Empty state if no assessments -->
+  <div *ngIf="!assessments().length" class="empty-state">
+    <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" viewBox="0 0 24 24" fill="currentColor">
+      <path fill-rule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0118 9.375v9.375a3 3 0 003-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 00-.673-.05A3 3 0 0015 1.5h-1.5a3 3 0 00-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6zM13.5 3A1.5 1.5 0 0012 4.5h4.5A1.5 1.5 0 0015 3h-1.5z" clip-rule="evenodd" />
+      <path fill-rule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V9.375z" clip-rule="evenodd" />
+    </svg>
+    <h3 class="empty-title">No assessments available</h3>
+    <p class="empty-desc">You don't have any assessments assigned yet. Check back later.</p>
+  </div>
+</div>
 
-  <app-popup [hidden]="!popupConfig.isShowPopup" [isShowPopup]="popupConfig.isShowPopup" [config]="popupConfig"  (CloseInnerPopupEvent)="closeAssessment($event);">
-    <app-assessment-popup [hidden]="!isShowAssessmentPopup" (CloseEvent)="closeAssessment($event);"></app-assessment-popup>    
-    <app-message-popup [hidden]="!isShowMessagePopup()" (CloseEvent)="closeMessagePopup($event);"></app-message-popup>
+<app-popup 
+  [hidden]="!popupConfig.isShowPopup" 
+  [isShowPopup]="popupConfig.isShowPopup" 
+  [config]="popupConfig"  
+  (CloseInnerPopupEvent)="closeAssessment($event);">
+  <app-assessment-popup [hidden]="!isShowAssessmentPopup" (CloseEvent)="closeAssessment($event);"></app-assessment-popup>
+  <app-message-popup [hidden]="!isShowMessagePopup()" (CloseEvent)="closeMessagePopup($event);"></app-message-popup>
 </app-popup>

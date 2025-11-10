@@ -5,7 +5,7 @@ import { Sidebar } from './layout/sidebar/sidebar';
 import { Dashboard } from './dashboard/dashboard';
 import { Courses } from './courses/courses';
 import { Assessments } from './assessments/assessments';
-import { Chatbot } from './chatbot/chatbot';
+import { AiAssistant } from './ai-assistant/ai-assistant';
 import { Achievements } from './achievements/achievements';
 import { Profile } from './profile/profile';
 import { CommonModule } from '@angular/common';

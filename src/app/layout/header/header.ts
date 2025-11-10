@@ -1,50 +1,40 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { get } from '../../utility/sessionStorage';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth-service';
 import { Router } from '@angular/router';
-import { SidebarService } from '../sidebar-service';
 
 @Component({
   selector: 'app-header',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './header.html',
-  styleUrl: './header.css'
+  styleUrls: ['./header.css']
 })
-export class Header implements OnInit{
-  isDropdownOpen = false;
-  hovering = false; // keeps menu open while pointer is over menu area
-  authValue:any;
-  userInitials:any;
-  @ViewChild('dropdownRoot', { static: true }) dropdownRoot!: ElementRef;
-  constructor(private authService:AuthService,private router:Router,private sidebarService: SidebarService){}
+export class Header implements OnInit {
+  user: any;
+
+  constructor(private authService: AuthService, private router: Router) {}
+
   ngOnInit(): void {
-    this.authValue=this.authService.user;//get("AuthValue");
-
-    this.userInitials=this.authService.user?.name.substr(0,2).toUpperCase();// this.authValue.userName.substr(0,2).toUpperCase();
+    this.user = this.authService.user;
   }
 
-  toggleSidebar() {
-    this.sidebarService.toggleSidebar();
+  getInitials(name: string): string {
+    return name
+      .split(' ')
+      .map(part => part.charAt(0))
+      .join('')
+      .toUpperCase();
   }
 
-  toggleDropdown(event: Event) {
-    event.stopPropagation();
-    this.isDropdownOpen = !this.isDropdownOpen;
+  toggleSidebar(): void {
+    document.querySelector('.sidebar')?.classList.toggle('collapsed');
+    document.querySelector('.main-content')?.classList.toggle('expanded');
   }
 
-  closeDropdown() {
-    this.isDropdownOpen = false;
+  logout(): void {
+    // Implement logout functionality
+    this.authService.logOut();
+    this.router.navigate(['/login']);
   }
-
-  // Close on outside click
-  @HostListener('document:click', ['$event'])
-  handleClickOutside(ev: Event) {
-    if (!this.dropdownRoot?.nativeElement.contains(ev.target)) {
-      this.closeDropdown();
-    }
-  }
-  Logout(){
-     this.authService.logOut();
-  }
-   
 }

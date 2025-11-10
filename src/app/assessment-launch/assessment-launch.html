@@ -1,3 +1,57 @@
-<ng-container *ngIf="assessment()?.aiAssessmentUrl">
-<iframe allow="microphone; speech-recognition"  class="w-full h-full rounded-lg border-0" [src]="assessment()?.aiAssessmentUrl | trustHtml:'url'"></iframe>
-</ng-container>
+<div class="assessment-container">
+  <!-- Left sidebar -->
+  <div class="assessment-sidebar" [class.assessment-sidebar-collapsed]="isSidebarCollapsed">
+    <div style="padding: 15px 20px; font-weight: 600; border-bottom: 1px solid #e0e0e0;">
+      Assessment Details
+      <button class="toggle-sidebar" (click)="toggleSidebar()">
+        ◀
+      </button>
+    </div>
+    
+    <!-- Assessment Info -->
+    <div style="padding: 15px 20px;" *ngIf="assessment()">
+      <div style="margin-bottom: 10px;">
+        <strong>Type:</strong> {{assessment()?.assessmentType}}
+      </div>
+      
+      <!-- Add Start Assessment button in the sidebar -->
+      <button style="margin-top: 20px; padding: 8px 16px; background-color: #1890ff; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%;" 
+              (click)="startAssessment()">
+        Start Assessment
+      </button>
+    </div>
+  </div>
+  
+  <!-- Main content area -->
+  <div class="assessment-content">
+    <!-- Header with show sidebar button when collapsed -->
+    <div class="assessment-header">
+      <button *ngIf="isSidebarCollapsed" class="show-sidebar-button" (click)="toggleSidebar()">
+        ≡ Show Menu
+      </button>
+      <span>Assessment</span>
+    </div>
+    
+    <!-- Assessment iframe - using your existing implementation -->
+    <div class="iframe-container">
+      <ng-container *ngIf="assessment()?.aiAssessmentUrl && isAssessmentStarted">
+        <iframe allow="microphone; speech-recognition" 
+                class="w-full h-full rounded-lg border-0" 
+                [src]="assessment()?.aiAssessmentUrl | trustHtml:'url'">
+        </iframe>
+      </ng-container>
+      
+      <!-- Show start assessment message if not started -->
+      <div *ngIf="!isAssessmentStarted" style="display: flex; justify-content: center; align-items: center; height: 100%; background-color: #f9f9f9;">
+        <div style="text-align: center; padding: 20px; max-width: 600px;">
+          <h3>Assessment Ready</h3>
+          <p>Click the "Start Assessment" button when you're ready to begin.</p>
+          <button style="margin-top: 20px; padding: 10px 20px; background-color: #1890ff; color: white; border: none; border-radius: 4px; cursor: pointer;"
+                  (click)="startAssessment()">
+            Start Assessment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

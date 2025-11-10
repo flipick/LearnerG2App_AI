@@ -1,8 +1,14 @@
 {
-  "/api": {
-    "target": "https://localhost:7077",
-    "secure": false,
+  "/LearnerApi/*": {
+    "target": "https://g2.flipick.com",
+    "secure": true,
     "changeOrigin": true,
-    "logLevel": "debug"
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/LearnerApi": "/LearnerApi"
+    },
+    "headers": {
+      "Origin": "https://g2.flipick.com"
+    }
   }
 }

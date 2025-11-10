@@ -1,47 +1,91 @@
-<div *ngIf="signInForm" id="loginView" class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-[#1e1e1e] p-4">
-    <div class="w-full max-w-md bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg shadow-sm">
-      <div class="p-6">
-        <h2 class="text-xl font-semibold text-black dark:text-white mb-2">Welcome to Skills & Learning</h2>
-        <p class="text-sm text-[#7b8fa2] dark:text-[#b3c0cd] mb-6">Enter your name to access your learning dashboard</p>
-          <!-- Error Message -->
-        <p *ngIf="errorMessage" class="text-sm text-red-600 mb-4">
-          Invalid Email or Password
-        </p>
-        <form [formGroup]="signInForm" id="loginForm" (submit)="submitForm($event)">
-          <!-- Name Input -->
-          <div class="mb-4">
-            <label for="username" class="block text-sm font-medium text-black dark:text-white mb-1">Your Email</label>
+<div class="login-container" [ngClass]="{'dark': isDarkMode}">
+  <div class="login-card" *ngIf="signInForm">
+    <div class="login-header">
+      <h1 class="login-title">Welcome Back</h1>
+      <p class="login-subtitle">Sign in to access your learning dashboard</p>
+    </div>
+    
+    <div class="login-body">
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="error-message animate-shake">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+        </svg>
+        <span>Invalid email or password. Please try again.</span>
+      </div>
+
+      <form [formGroup]="signInForm" id="loginForm" class="login-form" (submit)="submitForm($event)">
+        <!-- Email Input -->
+        <div class="form-group">
+          <label for="username" class="form-label">Email Address</label>
+          <div class="input-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" class="input-icon" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+            </svg>
             <input
-              type="text"
+              type="email"
               id="username"
               name="username"
               formControlName="username"
-              class="w-full px-4 py-2 border border-[#aaabab] dark:border-[#545454] rounded-md bg-white dark:bg-[#1e1e1e] text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#444ce7]"
-              placeholder="Enter your email"
+              class="form-control input-with-icon"
+              placeholder="your.email@example.com"
               required
+              autocomplete="email"
             />
           </div>
-          <div class="mb-4">
-            <label for="password" class="block text-sm font-medium text-black dark:text-white mb-1">Password</label>
+          <div *ngIf="submitted && f['username'].errors" class="error-message">
+            <span *ngIf="f['username'].errors['required']">Email is required</span>
+          </div>
+        </div>
+
+        <!-- Password Input -->
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <div class="input-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" class="input-icon" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+            </svg>
             <input
-              type="password"
+              [type]="showPassword ? 'text' : 'password'"
               id="password"
               name="password"
               formControlName="password"
-              class="w-full px-4 py-2 border border-[#aaabab] dark:border-[#545454] rounded-md bg-white dark:bg-[#1e1e1e] text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-[#444ce7]"
+              class="form-control input-with-icon"
               placeholder="Enter your password"
               required
+              autocomplete="current-password"
             />
+            <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+              </svg>
+              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                <path fill-rule="evenodd" d="M3.707 2.293a1 1 0 00-1.414 1.414l14 14a1 1 0 001.414-1.414l-1.473-1.473A10.014 10.014 0 0019.542 10C18.268 5.943 14.478 3 10 3a9.958 9.958 0 00-4.512 1.074l-1.78-1.781zm4.261 4.26l1.514 1.515a2.003 2.003 0 012.45 2.45l1.514 1.514a4 4 0 00-5.478-5.478z" clip-rule="evenodd" />
+                <path d="M12.454 16.697L9.75 13.992a4 4 0 01-3.742-3.741L2.335 6.578A9.98 9.98 0 00.458 10c1.274 4.057 5.065 7 9.542 7 .847 0 1.669-.105 2.454-.303z" />
+              </svg>
+            </button>
           </div>
+          <div *ngIf="submitted && f['password'].errors" class="error-message">
+            <span *ngIf="f['password'].errors['required']">Password is required</span>
+          </div>
+        </div>
   
-          <!-- Submit Button -->
-          <button
-            type="submit"
-            class="w-full bg-[#444ce7] text-white py-2 rounded-md hover:bg-[#3730a3] active:bg-[#312e81] transition text-sm font-medium">
-            Enter Learning Portal
-          </button>
-        </form>
-      </div>
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="isLoading">
+          <span *ngIf="!isLoading">Sign In</span>
+          <span *ngIf="isLoading">Signing In...</span>
+        </button>
+
+        <!-- Loading Progress Bar -->
+        <div class="progress-bar" *ngIf="isLoading">
+          <div class="progress-value" [style.width]="progressValue + '%'"></div>
+        </div>
+      </form>
     </div>
   </div>
-  
+</div>

@@ -1,65 +1,35 @@
-<main class="min-h-screen">
-  <div class="max-w-[1200px] mx-auto">
-    <!-- Page Header -->
-    <header class="mb-8">
-      <h1 class="text-2xl font-semibold text-black dark:text-white">Achievements</h1>
-      <p class="text-[#7b8fa2] dark:text-[#b3c0cd] mt-2">Your earned certificates and completed courses</p>
-    </header>
+<div class="achievements-container">
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="page-title">Achievements</h1>
+    <p class="page-subtitle">Your earned certificates and completed courses</p>
+  </div>
 
-    <!-- Achievement Cards Grid -->
-    <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 2xl:grid-cols-3">
-      
-      <!-- Achievement Card 1 -->
-      <div *ngFor="let course of completedCourses()" class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg p-6 shadow-sm">
-        <!-- <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4 border border-[#aaabab] text-xl">📊</div> -->
-        <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4 border border-[#aaabab] text-xl"  [ngStyle]="{'background-image': 'url(' + course.thumbnailurl + ')'}"></div>
-        <h3 class="text-xl font-semibold text-[var(--color-text)] mb-2 leading-tight">{{course.courseName}}</h3>
-        <p class="text-base text-[var(--color-text-secondary)] mb-5 leading-normal">Complete {{course.courseName}}</p>
-        <div class="flex items-center">
-          <span class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-neutral-200 text-[var(--color-text-secondary)] border border-neutral-400">Earned</span>
+  <!-- Achievement Cards Grid -->
+  <div class="achievements-grid">
+    <!-- Achievement Card -->
+    <div *ngFor="let course of completedCourses()" class="achievement-card">
+      <div class="achievement-icon" [style.background-image]="'url(' + course.thumbnailurl + ')'">
+        <!-- Fallback icon if no image -->
+        <span *ngIf="!course.thumbnailurl" class="fallback-icon">🎓</span>
+      </div>
+      <div class="achievement-content">
+        <h3 class="achievement-title">{{course.courseName}}</h3>
+        <p class="achievement-description">Completed {{course.courseName}} course</p>
+        <div class="achievement-footer">
+          <span class="badge badge-success">Earned</span>
+          <!-- Removed the date display since completionDate doesn't exist -->
         </div>
       </div>
-
-      <!-- Achievement Card 2 -->
-      <!-- <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg p-6 shadow-sm">
-        <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4 border border-[#aaabab] text-xl">💬</div>
-        <h3 class="text-xl font-semibold text-[var(--color-text)] mb-2 leading-tight">Effective Communication and Barriers</h3>
-        <p class="text-base text-[var(--color-text-secondary)] mb-5 leading-normal">Complete Effective Communication and Barriers</p>
-        <div class="flex items-center">
-           <span class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-neutral-200 text-[var(--color-text-secondary)] border border-neutral-400">Earned</span>
-        </div>
-      </div> -->
-
-      <!-- Achievement Card 3 -->
-      <!-- <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg p-6 shadow-sm">
-        <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4 border border-[#aaabab] text-xl">⭐</div>
-        <h3 class="text-xl font-semibold text-[var(--color-text)] mb-2 leading-tight">Explore Value Added Services</h3>
-        <p class="text-base text-[var(--color-text-secondary)] mb-5 leading-normal">Complete Explore Value Added Services</p>
-        <div class="flex items-center">
-           <span class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-neutral-200 text-[var(--color-text-secondary)] border border-neutral-400">Earned</span>
-        </div>
-      </div> -->
-
-      <!-- Achievement Card 4 -->
-      <!-- <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg p-6 shadow-sm">
-        <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4 border border-[#aaabab] text-xl">📋</div>
-        <h3 class="text-xl font-semibold text-[var(--color-text)] mb-2 leading-tight">ABN Overview</h3>
-        <p class="text-base text-[var(--color-text-secondary)] mb-5 leading-normal">Complete ABN Overview</p>
-        <div class="flex items-center">
-           <span class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-neutral-200 text-[var(--color-text-secondary)] border border-neutral-400">Earned</span>
-        </div>
-      </div> -->
-
-      <!-- Achievement Card 5 -->
-      <!-- <div class="bg-white dark:bg-[#2d2d2d] border border-[#aaabab] dark:border-[#545454] rounded-lg p-6 shadow-sm">
-        <div class="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full mb-4 border border-[#aaabab] text-xl">💼</div>
-        <h3 class="text-xl font-semibold text-[var(--color-text)] mb-2 leading-tight">Capital Adequacy</h3>
-        <p class="text-base text-[var(--color-text-secondary)] mb-5 leading-normal">Complete Capital Adequacy</p>
-        <div class="flex items-center">
-           <span class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full bg-neutral-200 text-[var(--color-text-secondary)] border border-neutral-400">Earned</span>
-        </div>
-      </div> -->
-
     </div>
   </div>
-</main>
+  
+  <!-- Empty state if no achievements -->
+  <div *ngIf="!completedCourses() || completedCourses()!.length === 0" class="empty-state">
+    <svg xmlns="http://www.w3.org/2000/svg" class="empty-icon" viewBox="0 0 24 24" fill="currentColor">
+      <path fill-rule="evenodd" d="M8.603 3.799A4.49 4.49 0 0112 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 013.498 1.307 4.491 4.491 0 011.307 3.497A4.49 4.49 0 0121.75 12a4.49 4.49 0 01-1.549 3.397 4.491 4.491 0 01-1.307 3.497 4.491 4.491 0 01-3.497 1.307A4.49 4.49 0 0112 21.75a4.49 4.49 0 01-3.397-1.549 4.49 4.49 0 01-3.498-1.306 4.491 4.491 0 01-1.307-3.498A4.49 4.49 0 012.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 011.307-3.497 4.49 4.49 0 013.497-1.307zm7.007 6.387a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+    </svg>
+    <h3 class="empty-title">No achievements yet</h3>
+    <p class="empty-desc">Complete courses to earn achievements and certificates.</p>
+  </div>
+</div>

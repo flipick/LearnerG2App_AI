@@ -1,75 +1,23 @@
-<header class="bg-white border-b border-[#aaabab] fixed top-0 left-0 right-0 z-50 h-[60px] px-4 py-3">
-    <div class="flex items-center justify-between">
-      <!-- Left Section -->
-      <div class="flex items-center gap-3">
-        <button
-          id="sidebarToggle"
-          (click)="toggleSidebar()"
-          class="inline-flex items-center justify-center px-3 py-1 text-sm rounded bg-[rgba(94,82,64,0.12)] text-black hover:bg-[rgba(94,82,64,0.2)] active:bg-[rgba(94,82,64,0.25)]"
-        >
-          ☰
-        </button>
-        <h1 class="text-xl text-[#444ce7] font-semibold m-0">Skills & Learning</h1>
+<div class="app-header">
+  <div class="header-left">
+    <button id="menuToggle" class="menu-toggle">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+        <path fill-rule="evenodd" d="M3 6.75A.75.75 0 013.75 6h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 6.75zM3 12a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75A.75.75 0 013 12zm0 5.25a.75.75 0 01.75-.75h16.5a.75.75 0 010 1.5H3.75a.75.75 0 01-.75-.75z" clip-rule="evenodd" />
+      </svg>
+    </button>
+    <h1 class="app-title">Skills & Learning</h1>
+  </div>
+  <div class="header-right">
+    <div class="user-profile">
+      <span class="user-name">{{user?.name}}</span>
+      <div class="avatar-container">
+        <div class="avatar">{{getInitials(user?.name || 'L')}}</div>
       </div>
-  
-      <!-- Right Section -->
-      <div class="flex items-center gap-2">
-        <div
-          #dropdownRoot
-          class="relative"
-          (mouseenter)="hovering = false"
-          (mouseleave)="hovering = false"
-        >
-          <button
-            #dropdownButton
-            type="button"
-            (click)="toggleDropdown($event)"
-            (keydown.escape)="closeDropdown()"
-            [attr.aria-expanded]="isDropdownOpen"
-            class="flex items-center text-sm text-[#444ce7] font-semibold bg-white/20 border border-[#444ce7] rounded-full px-3 py-1 cursor-pointer"
-          >
-            <span
-              id="userInitials"
-              class="w-8 h-8 rounded-full bg-[#444ce7] text-white inline-flex items-center justify-center font-bold mr-2"
-            >
-              {{userInitials}}
-            </span>
-            {{authValue?.name}}
-            <svg
-              class="ml-2 h-4 w-4"
-              fill="none"
-              stroke="#444ce7"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </button>
-
-          <!-- Keep in DOM; hide with classes so there's no flicker -->
-          <div
-            #menu
-            [class.hidden]="!isDropdownOpen && !hovering"
-            class="absolute right-0 top-11 w-full bg-white border border-gray-300 rounded-lg shadow-2xl py-2 mt-1"
-            (keydown.escape)="closeDropdown()"
-          >
-            <button type="button" (click)="Logout();" class="w-full flex justify-center items-center gap-1 bg-primary-100 text-primary-500 text-sm font-semibold px-4 py-2 hover:bg-primary-200">
-              Logout
-            </button>
-          </div>
-        </div>
-        <button
-          id="colorModeToggle"
-          aria-label="Toggle color mode"
-          class="hidden inline-flex items-center justify-center px-3 py-1 text-sm rounded bg-[rgba(94,82,64,0.12)] text-black hover:bg-[rgba(94,82,64,0.2)] active:bg-[rgba(94,82,64,0.25)]"
-        >
-          🌙
-        </button>
-        </div>
+      <button class="profile-dropdown-toggle">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+          <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z" clip-rule="evenodd" />
+        </svg>
+      </button>
     </div>
-  </header>
-  
+  </div>
+</div>

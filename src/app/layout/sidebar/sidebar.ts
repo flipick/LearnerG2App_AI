@@ -1,22 +1,27 @@
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SidebarService } from '../sidebar-service';
-import { Observable } from 'rxjs';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar',
-   standalone: true,
+  standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.css'
+  styleUrls: ['./sidebar.css']
 })
-export class Sidebar {
-  open$: Observable<boolean>;
+export class Sidebar implements OnInit {
+  activeRoute: string = '';
 
-  constructor(private sidebarService: SidebarService) {
-    this.open$ = this.sidebarService.sidebarOpen$;
+  constructor(private router: Router) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      this.activeRoute = event.url;
+    });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.activeRoute = this.router.url;
+  }
 }

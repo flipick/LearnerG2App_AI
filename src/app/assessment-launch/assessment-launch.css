@@ -1,0 +1,72 @@
+/* Assessment layout styles */
+.assessment-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Left sidebar */
+.assessment-sidebar {
+  width: 325px;
+  min-width: 250px;
+  background-color: #f9f9f9;
+  border-right: 1px solid #e0e0e0;
+  overflow-y: auto;
+  transition: width 0.3s ease;
+  position: relative;
+}
+
+.assessment-sidebar-collapsed {
+  width: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.toggle-sidebar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.show-sidebar-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  margin-right: 15px;
+}
+
+/* Main content area */
+.assessment-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Assessment header */
+.assessment-header {
+  padding: 15px 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 18px;
+  font-weight: 600;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+}
+
+/* Content iframe container */
+.iframe-container {
+  flex: 1;
+  width: 100%;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+  position: relative;
+}

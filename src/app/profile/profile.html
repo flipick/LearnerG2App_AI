@@ -1,162 +1,99 @@
-<!-- Main Content -->
-<main class="main-content min-h-screen">
-  <div class="content-container max-w-7xl mx-auto space-y-8">
-
-    <!-- Profile Section -->
-    <section class="profile-section">
-      <div class="bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="p-6">
-          <!-- Header -->
-          <div class="mb-6">
-            <h2 class="text-2xl font-semibold text-gray-800">My Profile</h2>
-            <p class="text-gray-500">Track your learning progress</p>
-          </div>
-
-          <!-- Profile Info -->
-          <div class="flex items-center space-x-6">
-            <!-- Avatar -->
-            <div class="profile-avatar">
-              <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold text-xl">
-                {{userTitle()}}
-              </div>
-            </div>
-
-            <!-- Details -->
-            <div class="flex-1">
-              <h3 class="text-xl font-semibold text-gray-800">{{userProfile()?.name}}</h3>
-              <p class="text-gray-500">{{earnedBadges()}} badges earned</p>
-            </div>
-
-            <!-- Achievements -->
-            <div class="profile-achievements text-center">
-              <div class="flex flex-col items-center text-gray-400">
-                <span class="text-2xl">🏆</span>
-                <span *ngIf="completedAssessmentsCount()==0" class="text-sm mt-1">No achievements yet</span>
-                <span *ngIf="completedAssessmentsCount()>0" class="text-sm mt-1">You have completed {{completedAssessmentsCount()}} assessments</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Course Progress Section -->
-    <section class="course-section">
-      <div class="section-header mb-4">
-        <h2 class="text-2xl font-semibold text-gray-800">Course Progress</h2>
-      </div>
-      <div class="bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="overflow-x-auto">
-          <div class="min-w-full divide-y divide-gray-200">
-            <!-- Table Header -->
-            <div class="grid grid-cols-3 bg-gray-100 text-gray-600 font-medium text-left p-4">
-              <div>Course Name</div>
-              <div>Status</div>
-              <div>Progress</div>
-            </div>
-
-            <!-- Table Body -->
-            <div class="divide-y divide-gray-200">
-              <!-- Row 1 -->
-              <div *ngFor="let course of courses()" class="grid grid-cols-3 p-4 items-center">
-                <div class="text-gray-800 font-medium">{{course.courseName}}</div>
-                <div><span class="text-green-600 font-semibold">{{course.status | capitalize}}</span></div>
-                <div class="flex items-center space-x-2">
-                  <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                    <div class="h-2 rounded-full" [ngClass]="course.completionPercentage =='100' ? 'bg-green-600':''" [style.width.%]="course.completionPercentage" ></div>
-                  </div>
-                  <span class="text-gray-700 text-sm">{{course.completionPercentage}}%</span>
-                </div>
-              </div>
-
-              <!-- Row 2 -->
-              <!-- <div class="grid grid-cols-3 p-4 items-center">
-                <div class="text-gray-800 font-medium">Effective Communication and Barriers</div>
-                <div><span class="text-green-600 font-semibold">Published</span></div>
-                <div class="flex items-center space-x-2">
-                  <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                    <div class="bg-green-600 h-2 rounded-full w-full" style="width:100%"></div>
-                  </div>
-                  <span class="text-gray-700 text-sm">100%</span>
-                </div>
-              </div> -->
-
-              <!-- Row 3 -->
-              <!-- <div class="grid grid-cols-3 p-4 items-center">
-                <div class="text-gray-800 font-medium">GSK Passion</div>
-                <div><span class="text-green-600 font-semibold">Published</span></div>
-                <div class="flex items-center space-x-2">
-                  <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                    <div class="bg-green-600 h-2 rounded-full w-0" style="width:0%"></div>
-                  </div>
-                  <span class="text-gray-700 text-sm">0%</span>
-                </div>
-              </div> -->
-
-              <!-- Row 4 -->
-              <!-- <div class="grid grid-cols-3 p-4 items-center">
-                <div class="text-gray-800 font-medium">SQL (Structured Query Language)</div>
-                <div><span class="text-green-600 font-semibold">Published</span></div>
-                <div class="flex items-center space-x-2">
-                  <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                    <div class="bg-green-600 h-2 rounded-full w-full" style="width:100%"></div>
-                  </div>
-                  <span class="text-gray-700 text-sm">100%</span>
-                </div>
-              </div> -->
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Assessment Scores Section -->
-    <section class="assessment-section">
-      <div class="section-header mb-4">
-        <h2 class="text-2xl font-semibold text-gray-800">Assessment Scores</h2>
-      </div>
-      <div [ngClass]="assessments().length==0 ? '' : 'hidden'"  class="bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="p-6">
-          <div class="flex flex-col items-center justify-center text-center text-gray-500 space-y-4">
-            <div class="text-4xl">📝</div>
-            <h3 class="text-xl font-semibold text-gray-800">No assessments completed yet</h3>
-            <p>Start your learning journey by taking your first assessment</p>
-            <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Take Assessment</button>
-          </div>
-        </div>
-      </div>
-
-
-      <div [ngClass]="assessments().length>0 ? '' : 'hidden'" class="bg-white rounded-xl shadow-md overflow-hidden">
-        <div class="overflow-x-auto">
-          <div class="min-w-full divide-y divide-gray-200">
-            <!-- Table Header -->
-            <div class="grid grid-cols-3 bg-gray-100 text-gray-600 font-medium text-left p-4">
-              <div>Assessment</div>
-              <div>Status</div>
-              <div>Best Score</div>
-            </div>
-
-            <!-- Table Body -->
-            <div class="divide-y divide-gray-200">
-              <!-- Row 1 -->
-              <div *ngFor="let assessment of assessments()" class="grid grid-cols-3 p-4 items-center">
-                <div class="text-gray-800 font-medium">{{assessment.assessmentTitle}}</div>
-                <div><span class="text-green-600 font-semibold">{{assessment.status | capitalize}}</span></div>
-                <div class="flex items-center space-x-2">
-                  <!-- <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
-                    <div class="h-2 rounded-full" [ngClass]="assessment.bestScore =='100' ? 'bg-green-600':''" [style.width%]="course.completionPercentage" ></div>
-                  </div> -->
-                  <span class="text-gray-700 text-sm">{{assessment.bestScore}}%</span>
-                </div>
-              </div>
-
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
+<div class="profile-container">
+  <!-- Header -->
+  <div class="page-header">
+    <h1 class="page-title">My Profile</h1>
+    <p class="page-subtitle">Track your learning progress</p>
   </div>
-</main>
+
+  <!-- Profile Section -->
+  <div class="profile-card">
+    <div class="profile-info">
+      <div class="profile-avatar">
+        <span class="avatar-text">{{userTitle()}}</span>
+      </div>
+      <div class="profile-details">
+        <h2 class="profile-name">{{userProfile()?.name}}</h2>
+        <p class="profile-stats">{{earnedBadges()}} badges earned</p>
+      </div>
+    </div>
+    <div class="profile-achievements">
+      <span class="achievement-icon">🏆</span>
+      <span *ngIf="completedAssessmentsCount()==0" class="achievement-text">No achievements yet</span>
+      <span *ngIf="completedAssessmentsCount()>0" class="achievement-text">{{completedAssessmentsCount()}} assessments completed</span>
+    </div>
+  </div>
+
+  <!-- Course Progress Section -->
+  <div class="section-container">
+    <h2 class="section-title">Course Progress</h2>
+    
+    <div class="table-container" *ngIf="courses().length > 0">
+      <div class="table-header">
+        <div class="col-course-name">Course Name</div>
+        <div class="col-status">Status</div>
+        <div class="col-progress">Progress</div>
+      </div>
+      
+      <div class="table-body">
+        <div *ngFor="let course of courses()" class="table-row">
+          <div class="col-course-name">{{course.courseName}}</div>
+          <div class="col-status">
+            <span class="status-badge" [ngClass]="course.completionPercentage == '100' ? 'status-completed' : 'status-in-progress'">
+              {{course.status | capitalize}}
+            </span>
+          </div>
+          <div class="col-progress">
+            <div class="progress-track">
+              <div class="progress-bar" 
+                   [ngClass]="course.completionPercentage == '100' ? 'progress-complete' : ''" 
+                   [style.width.%]="course.completionPercentage">
+              </div>
+            </div>
+            <span class="progress-text">{{course.completionPercentage}}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="courses().length === 0">
+      <div class="empty-icon">📚</div>
+      <h3 class="empty-title">No courses enrolled</h3>
+      <p class="empty-desc">You haven't enrolled in any courses yet.</p>
+    </div>
+  </div>
+
+  <!-- Assessment Scores Section -->
+  <div class="section-container">
+    <h2 class="section-title">Assessment Scores</h2>
+    
+    <div class="table-container" *ngIf="assessments().length > 0">
+      <div class="table-header">
+        <div class="col-assessment">Assessment</div>
+        <div class="col-status">Status</div>
+        <div class="col-score">Best Score</div>
+      </div>
+      
+      <div class="table-body">
+        <div *ngFor="let assessment of assessments()" class="table-row">
+          <div class="col-assessment">{{assessment.assessmentTitle}}</div>
+          <div class="col-status">
+            <span class="status-badge" 
+                  [ngClass]="assessment.status === 'Completed' ? 'status-completed' : 'status-in-progress'">
+              {{assessment.status | capitalize}}
+            </span>
+          </div>
+          <div class="col-score">
+            <span class="score-text">{{assessment.bestScore}}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="assessments().length === 0">
+      <div class="empty-icon">📝</div>
+      <h3 class="empty-title">No assessments completed yet</h3>
+      <p class="empty-desc">Start your learning journey by taking your first assessment</p>
+      <button class="btn btn-primary">Take Assessment</button>
+    </div>
+  </div>
+</div>

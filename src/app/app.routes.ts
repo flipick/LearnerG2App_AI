@@ -3,7 +3,7 @@ import { Header } from './layout/header/header';
 import { Dashboard } from './dashboard/dashboard';
 import { Courses } from './courses/courses';
 import { Assessments } from './assessments/assessments';
-import { Chatbot } from './chatbot/chatbot';
+import { AiAssistant } from './ai-assistant/ai-assistant';
 import { Achievements } from './achievements/achievements';
 import { Profile } from './profile/profile';
 import { Login } from './login/login';
@@ -22,10 +22,11 @@ export const routes: Routes = [
             { path: 'course-launch', loadComponent: () => import('./course-launch/course-launch').then(m => m.CourseLaunch), data: { title: 'CouresLaunch' } },
             { path: 'package-courses', loadComponent:() => import('./package-courses/package-courses').then(m => m.PackageCourses), data: { title: 'PackageCourses' } },
             { path: 'assessments', component: Assessments, data: { title: 'Assessments' } },
-            { path: 'chatbot', component: Chatbot, data: { title: 'Chatbot' } },
+            { path: 'assistant', component: AiAssistant, data: { title: 'AI Assistant' } },
             { path: 'achievements', component: Achievements, data: { title: 'Achievements' } },
             { path: 'profile', component: Profile, data: { title: 'Profile' } },
-            {path:'assessment-launch',component:AssessmentLaunch,data:{title:'assessment-launch'}}
+            {path:'assessment-launch',component:AssessmentLaunch,data:{title:'assessment-launch'}},  // Added comma here
+            { path: 'learning-goals', loadComponent: () => import('./learning-goals/learning-goals.component').then(m => m.LearningGoalsComponent), data: { title: 'Learning Goals' } }
         ],
         canActivate:[authGuard]
     }

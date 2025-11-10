@@ -1,22 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Header } from '../header/header';
 import { Sidebar } from '../sidebar/sidebar';
-import { RouterOutlet } from '@angular/router';
-import { Loader } from '../../feature/loader/loader';
-import { SidebarService } from '../sidebar-service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-content',
-  imports: [RouterOutlet,CommonModule,Header,Sidebar,Loader],
+  standalone: true,
+  imports: [CommonModule, RouterModule, Header, Sidebar],
   templateUrl: './content.html',
-  styleUrl: './content.css'
+  styleUrls: ['./content.css']
 })
 export class Content {
-  sidebarOpen$: Observable<boolean>;
-
-  constructor(private sidebarService: SidebarService) {
-    this.sidebarOpen$ = this.sidebarService.sidebarOpen$;
-  }
+  // This component just serves as a wrapper for the header, sidebar, and main content
 }

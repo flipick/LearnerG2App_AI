@@ -57,6 +57,9 @@
           "options": {
             "proxyConfig": "proxy.conf.json"
           },
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          },
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
@@ -88,5 +91,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "ebbe5739-819e-4840-9e9a-4ad5226e62e5"
   }
 }
