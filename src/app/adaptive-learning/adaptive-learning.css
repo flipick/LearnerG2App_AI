@@ -1,4 +1,8 @@
-/* Adaptive Learning Styles */
+/* Base styles */
+:host {
+  display: block;
+}
+
 .adaptive-learning-container {
   max-width: 1200px;
   margin: 0 auto;

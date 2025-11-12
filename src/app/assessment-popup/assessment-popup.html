@@ -1,135 +1,22 @@
-<!-- Modal -->
-<div id="assessmentModal" 
-     class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+<!-- Results -->
+<div *ngIf="isSubmitted()" id="assessmentResults" class="space-y-2">
+  <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100">Assessment Results</h4>
+  <p id="assessmentScore" class="text-sm text-gray-600 dark:text-gray-400">
+    {{finalScore()}}
+  </p>
+  <div id="assessmentFeedback" class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-sm text-gray-700 dark:text-gray-200">
+    {{feedbackText()}}
+  </div>
   
-  <!-- Modal Content -->
-  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl w-full max-w-2xl overflow-hidden">
-    
-    <!-- Modal Header -->
-    <header>      
-      <div class="flex items-center justify-between border-b border-gray-200 dark:border-gray-700 px-4 py-3">
-        <h3 *ngIf="assessment()!=null" id="modalAssessmentTitle" class="text-lg font-semibold text-gray-800 dark:text-gray-100">
-          {{assessment()?.assessmentTitle}}
-        </h3>
-        <span>{{minStr()}}:{{secStr()}}</span>        
-        <button id="closeAssessmentModal" (click)="close();"
-                class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 text-2xl font-bold">
-          ×
-        </button>
-      </div>
-    </header>
-
-    <!-- Modal Body -->
-    <section class="p-6 space-y-6">
-      <div class="grid gap-4">
-        <!-- Assessment Content -->
-        <div id="assessmentContent">          
-          <div class="question-container" *ngFor="let question of questions(); let i=index;">
-            <p *ngIf="(i+1) == currentQuestionIndex()"  class="text-sm text-gray-600 dark:text-gray-400">Question {{i+1}} of {{questions().length}}</p>
-            <h4 *ngIf="(i+1) == currentQuestionIndex()" class="text-lg font-medium text-gray-800 dark:text-gray-100 mb-4">
-              {{question.questionText}}
-            </h4>
-
-            <!-- Options -->
-            <div *ngIf="question.questionTypeName == 'Multiple Choice (Single Answer)' && (i+1) == currentQuestionIndex()"  class="space-y-3">
-              <label class="group relative flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:border-[#444ce7] hover:text-[#444ce7] focus-within:border-[#444ce7] focus-within:ring-[#444ce7] py-2 px-3 cursor-pointer">
-                <input type="radio" name="question1" value="a" class="peer appearance-none w-3 h-3 border border-gray-400 rounded-full checked:ring-1 checked:ring-offset-1 checked:ring-[#444ce7] checked:bg-[#444ce7] checked:border-[#444ce7] " (change)="changeOnRadio($event,i);">
-                <span class="peer-checked:text-[#444ce7] font-medium group-[.correct]:text-green-700 group-[.wrong]:text-red-500 !text-inherit">{{question.a}}</span>
-              </label>
-
-              <label class="group relative flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:border-[#444ce7] hover:text-[#444ce7] focus-within:border-[#444ce7] focus-within:ring-[#444ce7] py-2 px-3 cursor-pointer">
-                <input type="radio" name="question1" value="b" class="peer appearance-none w-3 h-3 border border-gray-400 rounded-full checked:ring-1 checked:ring-offset-1 checked:ring-[#444ce7] checked:bg-[#444ce7] checked:border-[#444ce7]" (change)="changeOnRadio($event,i);">
-                <span class="peer-checked:text-[#444ce7] font-medium group-[.correct]:text-green-700 group-[.wrong]:text-red-500 !text-inherit">{{question.b}}</span>
-              </label>
-
-              <label class="group relative flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:border-[#444ce7] hover:text-[#444ce7] focus-within:border-[#444ce7] focus-within:ring-[#444ce7] py-2 px-3 cursor-pointer">
-                <input type="radio" name="question1" value="c" class="peer appearance-none w-3 h-3 border border-gray-400 rounded-full checked:ring-1 checked:ring-offset-1 checked:ring-[#444ce7] checked:bg-[#444ce7] checked:border-[#444ce7]" (change)="changeOnRadio($event,i);">
-                <span class="peer-checked:text-[#444ce7] font-medium group-[.correct]:text-green-700 group-[.wrong]:text-red-500 !text-inherit">{{question.c}}</span>
-              </label>
-
-              <label class="group relative flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:border-[#444ce7] hover:text-[#444ce7] focus-within:border-[#444ce7] focus-within:ring-[#444ce7] py-2 px-3 cursor-pointer">
-                <input type="radio" name="question1" value="d" class="peer appearance-none w-3 h-3 border border-gray-400 rounded-full checked:ring-1 checked:ring-offset-1 checked:ring-[#444ce7] checked:bg-[#444ce7] checked:border-[#444ce7]" (change)="changeOnRadio($event,i);">
-                <span class="peer-checked:text-[#444ce7] font-medium group-[.correct]:text-green-700 group-[.wrong]:text-red-500 !text-inherit">{{question.d}}</span>
-              </label>
-            </div>
-            <div *ngIf="question.questionTypeName == 'Multiple Choice (Multiple Answers)' && (i+1) == currentQuestionIndex()"  class="space-y-3">
-              <label class="group relative flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:border-[#444ce7] hover:text-[#444ce7] focus-within:border-[#444ce7] focus-within:ring-[#444ce7] py-2 px-3 cursor-pointer">
-                <input type="checkbox" name="question1" (change)="changeOnCheckBox($event,i);" value="a" class="peer appearance-none w-3 h-3 border border-gray-400 rounded-full checked:ring-1 checked:ring-offset-1 checked:ring-[#444ce7] checked:bg-[#444ce7] checked:border-[#444ce7]">
-                <span class="peer-checked:text-[#444ce7] font-medium group-[.correct]:text-green-700 group-[.wrong]:text-red-500 !text-inherit">{{question.a}}</span>
-              </label>
-
-              <label class="group relative flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:border-[#444ce7] hover:text-[#444ce7] focus-within:border-[#444ce7] focus-within:ring-[#444ce7] py-2 px-3 cursor-pointer">
-                <input type="checkbox" name="question2" (change)="changeOnCheckBox($event,i);" value="b" class="peer appearance-none w-3 h-3 border border-gray-400 rounded-full checked:ring-1 checked:ring-offset-1 checked:ring-[#444ce7] checked:bg-[#444ce7] checked:border-[#444ce7]">
-                <span class="peer-checked:text-[#444ce7] font-medium group-[.correct]:text-green-700 group-[.wrong]:text-red-500 !text-inherit">{{question.b}}</span>
-              </label>
-
-              <label class="group relative flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:border-[#444ce7] hover:text-[#444ce7] focus-within:border-[#444ce7] focus-within:ring-[#444ce7] py-2 px-3 cursor-pointer">
-                <input type="checkbox" name="question3" (change)="changeOnCheckBox($event,i);" value="c" class="peer appearance-none w-3 h-3 border border-gray-400 rounded-full checked:ring-1 checked:ring-offset-1 checked:ring-[#444ce7] checked:bg-[#444ce7] checked:border-[#444ce7]">
-                <span class="peer-checked:text-[#444ce7] font-medium group-[.correct]:text-green-700 group-[.wrong]:text-red-500 !text-inherit">{{question.c}}</span>
-              </label>
-
-              <label class="group relative flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:border-[#444ce7] hover:text-[#444ce7] focus-within:border-[#444ce7] focus-within:ring-[#444ce7] py-2 px-3 cursor-pointer">
-                <input type="checkbox" name="question4" (change)="changeOnCheckBox($event,i);" value="d" class="peer appearance-none w-3 h-3 border border-gray-400 rounded-full checked:ring-1 checked:ring-offset-1 checked:ring-[#444ce7] checked:bg-[#444ce7] checked:border-[#444ce7]">
-                <span class="peer-checked:text-[#444ce7] font-medium group-[.correct]:text-green-700 group-[.wrong]:text-red-500 !text-inherit">{{question.d}}</span>
-              </label>
-            </div>
-            <div *ngIf="question.questionTypeName == 'True/False' && (i+1) == currentQuestionIndex()"  class="space-y-3">
-              <label class="group relative flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:border-[#444ce7] hover:text-[#444ce7] focus-within:border-[#444ce7] focus-within:ring-[#444ce7] py-2 px-3 cursor-pointer">
-                <input type="radio" name="question1" (change)="changeOnRadio($event,i);" value="a" class="peer appearance-none w-3 h-3 border border-gray-400 rounded-full checked:ring-1 checked:ring-offset-1 checked:ring-[#444ce7] checked:bg-[#444ce7] checked:border-[#444ce7]">
-                <span class="peer-checked:text-[#444ce7] font-medium group-[.correct]:text-green-700 group-[.wrong]:text-red-500 !text-inherit">True</span>
-              </label>
-
-              <label class="group relative flex items-center gap-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg hover:border-[#444ce7] hover:text-[#444ce7] focus-within:border-[#444ce7] focus-within:ring-[#444ce7] py-2 px-3 cursor-pointer">
-                <input type="radio" name="question1" (change)="changeOnRadio($event,i);" value="b" class="peer appearance-none w-3 h-3 border border-gray-400 rounded-full checked:ring-1 checked:ring-offset-1 checked:ring-[#444ce7] checked:bg-[#444ce7] checked:border-[#444ce7]">
-                <span class="peer-checked:text-[#444ce7] font-medium group-[.correct]:text-green-700 group-[.wrong]:text-red-500 !text-inherit">False</span>
-              </label>
-
-              
-            </div>
-          </div>
-        </div>
-
-        <!-- Navigation Buttons -->
-        <div class="flex justify-between">
-          <div class="flex items-center gap-2">
-            <button type="button" class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-800"
-                    (click)="goToPreviousQuestion()">
-              Previous
-            </button>
-            <button *ngIf="isShowReviewTestBtn()" type="button" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-                    (click)="reviewAssessment()">
-              Review Test
-            </button>
-          </div>
-          <div class="flex items-center gap-2">
-            <button *ngIf="currentQuestionIndex()<questions().length" type="button" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-                    (click)="goToNextQuestion()">
-              Next
-            </button>
-            <button *ngIf="isShowSubmit() && !isReviewTest()" type="button" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold"
-                    (click)="submitPaper();">
-              Submit
-            </button>
-          </div>
-          
-        </div>
-      </div>
-
-      <!-- Results -->
-      <div *ngIf="isSubmitted()" id="assessmentResults" class="space-y-2">
-        <h4 class="text-lg font-medium text-gray-800 dark:text-gray-100">Assessment Results</h4>
-        <p id="assessmentScore" class="text-sm text-gray-600 dark:text-gray-400">
-          {{finalScore()}}
-        </p>
-        <div id="assessmentFeedback" class="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-sm text-gray-700 dark:text-gray-200">
-          {{feedbackText()}}
-        </div>
-      </div>
-    </section>
-
+  <!-- Adaptive Learning button - only shown for assessments that support it -->
+  <div *ngIf="hasAdaptiveLearning()" class="mt-4">
+    <button type="button" 
+            class="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold w-full"
+            (click)="navigateToAdaptiveLearning()">
+      View Personalized Learning Materials
+    </button>
+    <p class="text-xs text-center mt-2 text-gray-500">
+      Get customized learning content for areas that need improvement
+    </p>
   </div>
 </div>
-
-<app-popup [hidden]="!popupConfig.isShowPopup" [isShowPopup]="popupConfig.isShowPopup" [config]="popupConfig"  (CloseInnerPopupEvent)="closeMessagePopup($event);">
-    <app-message-popup [hidden]="!isShowMessagePopup()" (CloseEvent)="closeMessagePopup($event);"></app-message-popup>    
-</app-popup>

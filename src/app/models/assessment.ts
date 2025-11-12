@@ -20,6 +20,7 @@ export interface IAssessment{
       aiAssessmentUrl:string;
       attempted:string;
       formattedExpirationDate:string;
+      hasAdaptiveLearning?: boolean; // Added property for Adaptive Learning support
 }
 
 export interface ICheckAnwser{
@@ -46,6 +47,8 @@ export interface IAssessmentQuestion {
   points: number;
   explanation?: string | null;
   isSelected:boolean;
+  subCategoryId?: number; // Added property for adaptive learning categorization
+  subCategoryName?: string; // Added property for adaptive learning categorization
 }
 
 export interface IStudentAssessmentResultRequest {
@@ -84,4 +87,5 @@ export interface IAssessmentQuestionResult {
   shuffleSequence: string;
   newAnswer: string;
   scoredMarks: number;
+  subCategoryId?: number; // Added property for adaptive learning analysis
 }

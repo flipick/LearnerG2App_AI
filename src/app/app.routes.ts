@@ -25,7 +25,9 @@ export const routes: Routes = [
             { path: 'assistant', component: AiAssistant, data: { title: 'AI Assistant' } },
             { path: 'achievements', component: Achievements, data: { title: 'Achievements' } },
             { path: 'profile', component: Profile, data: { title: 'Profile' } },
-            {path:'assessment-launch',component:AssessmentLaunch,data:{title:'assessment-launch'}},  // Added comma here
+            {path:'assessment-launch',component:AssessmentLaunch,data:{title:'assessment-launch'}},
+            { path: 'adaptive-learning', loadComponent: () => import('./adaptive-learning-dashboard/adaptive-learning-dashboard').then(m => m.AdaptiveLearningDashboard), data: { title: 'Adaptive Learning' } },
+            { path: 'adaptive-learning/:id', loadComponent: () => import('./adaptive-learning/adaptive-learning').then(m => m.AdaptiveLearning), data: { title: 'Adaptive Learning Materials' } },
             { path: 'learning-goals', loadComponent: () => import('./learning-goals/learning-goals.component').then(m => m.LearningGoalsComponent), data: { title: 'Learning Goals' } }
         ],
         canActivate:[authGuard]

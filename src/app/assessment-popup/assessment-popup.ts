@@ -9,10 +9,13 @@ import { get, set } from '../utility/sessionStorage';
 import { PopUpConfig, PopUpConfigFactory } from '../popup/popup.config.model';
 import { Popup } from '../popup/popup';
 import { MessagePopup } from '../message-popup/message-popup';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-assessment-popup',
-  imports: [CommonModule,MessagePopup,Popup],
+  standalone: true, // Add standalone: true if not already present
+  imports: [CommonModule, MessagePopup, Popup],
   templateUrl: './assessment-popup.html',
   styleUrl: './assessment-popup.css'
 })
@@ -29,6 +32,9 @@ export class AssessmentPopup implements OnInit,OnDestroy {
   isShowSubmit = signal<boolean>(false);
   isReviewTest = signal<boolean>(false);
   isShowReviewTestBtn = signal<boolean>(false);
+  
+  // Added signal for Adaptive Learning support
+  hasAdaptiveLearning = signal<boolean>(false);
 
   //Local variables 
   answers: any = [];
@@ -53,11 +59,13 @@ export class AssessmentPopup implements OnInit,OnDestroy {
   @ViewChild('popup1') popup?: Popup;
   isShowMessagePopup=signal<boolean>(false);
   isTimerStop:boolean=false;
-  constructor(private assessmentService: AssessmentService,
-    private eventEmitterService: EventEmitterService,
-    private authService: AuthService
-  ) {
-  }
+  constructor(
+  private assessmentService: AssessmentService,
+  private eventEmitterService: EventEmitterService,
+  private authService: AuthService,
+  private router: Router
+) {
+}
   
   ngOnInit(): void {
     this.eventEmitterService.invokeAssessmentQuestion.subscribe((data) => {
@@ -103,6 +111,10 @@ export class AssessmentPopup implements OnInit,OnDestroy {
         this.isShowSubmit.set(false);
         this.currentQuestionIndex.set(0);
         this.isTimerStop=false;
+        
+        // Check for Adaptive Learning support
+        this.checkAdaptiveLearningSupport();
+        
         if (this.assessment()?.assessmentType.toUpperCase() == 'ADAPTIVE ASSESSMENT') {
           this.questions.set(Array.from({ length: this.assessment()!.noOfQuestions }, () => this.createEmptyQuestion()));
           this.getAdaptiveAssessmentNextQuestion();
@@ -111,6 +123,31 @@ export class AssessmentPopup implements OnInit,OnDestroy {
           this.getAssessmentQuestions();
         }
   }
+  
+  /**
+   * Checks if the current assessment supports Adaptive Learning
+   */
+  checkAdaptiveLearningSupport(): void {
+    if (!this.assessment()) {
+      this.hasAdaptiveLearning.set(false);
+      return;
+    }
+    
+    this.assessmentService.checkAdaptiveLearningSupport(this.assessment()!.assessmentId).subscribe({
+      next: (data: any) => {
+        if (data.success) {
+          this.hasAdaptiveLearning.set(data.result);
+        } else {
+          this.hasAdaptiveLearning.set(false);
+        }
+      },
+      error: (err: any) => {
+        console.error('Error checking Adaptive Learning support:', err);
+        this.hasAdaptiveLearning.set(false);
+      }
+    });
+  }
+  
   getAssessmentQuestions() {
     this.assessmentService.getAssessmentQuestions(this.assessment()?.assessmentId).subscribe({
       next: (data) => {
@@ -572,5 +609,13 @@ openMessagePopup(message:any) {
   ngOnDestroy(): void {
     this.stopTimer();
   }
-
+navigateToAdaptiveLearning(): void {
+  if (this.assessment()) {
+    // Close the current popup
+    this.close();
+    
+    // Navigate to the adaptive learning view for this assessment
+    this.router.navigate(['/adaptive-learning', this.assessment()!.assessmentId]);
+  }
+}
 }

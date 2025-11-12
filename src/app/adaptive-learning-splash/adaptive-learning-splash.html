@@ -1,0 +1,49 @@
+<div class="splash-overlay">
+  <div class="splash-container">
+    <div class="splash-header">
+      <h2>Welcome to Adaptive Learning</h2>
+      <button (click)="closeOnly()" class="close-button">×</button>
+    </div>
+    
+    <div class="splash-content">
+      <div class="feature-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.589-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+          <path d="M14.828 9.172a.999.999 0 0 0-1.414 0l-1.414 1.414-1.414-1.414a.999.999 0 1 0-1.414 1.414l1.414 1.414-1.414 1.414a.999.999 0 1 0 1.414 1.414l1.414-1.414 1.414 1.414a.999.999 0 1 0 1.414-1.414l-1.414-1.414 1.414-1.414a.999.999 0 0 0 0-1.414z" />
+        </svg>
+      </div>
+      
+      <p class="feature-description">
+        Adaptive Learning provides personalized learning materials based on your assessment results.
+        This feature identifies your strengths and areas for improvement, then recommends tailored content to help you master the subject.
+      </p>
+      
+      <div class="feature-highlights">
+        <div class="highlight-item">
+          <div class="highlight-icon">🎯</div>
+          <div class="highlight-text">Targeted learning recommendations</div>
+        </div>
+        
+        <div class="highlight-item">
+          <div class="highlight-icon">📊</div>
+          <div class="highlight-text">Detailed performance analysis</div>
+        </div>
+        
+        <div class="highlight-item">
+          <div class="highlight-icon">📝</div>
+          <div class="highlight-text">Personalized study plans</div>
+        </div>
+        
+        <div class="highlight-item">
+          <div class="highlight-icon">🤖</div>
+          <div class="highlight-text">AI-generated content</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="splash-footer">
+      <button (click)="closeAndDontShowAgain()" class="dont-show-again-button">Don't show again</button>
+      <button (click)="closeOnly()" class="continue-button">Continue</button>
+    </div>
+  </div>
+</div>

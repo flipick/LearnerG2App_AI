@@ -1,0 +1,715 @@
+<style>
+  .adaptive-learning-container {
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .heading-txt {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    color: #111827;
+  }
+
+  .content-text {
+    font-size: 0.875rem;
+    color: #6B7280;
+    margin: 0.25rem 0 0 0;
+  }
+
+  /* Back button */
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.375rem;
+    background-color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover {
+    background-color: #F3F4F6;
+    border-color: #9CA3AF;
+  }
+
+  /* Loading state */
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+  }
+
+  .loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #3498db;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Error and success messages */
+  .error-message, .success-message {
+    padding: 1rem;
+    border-radius: 0.375rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .error-message {
+    background-color: #FEE2E2;
+    color: #B91C1C;
+    border: 1px solid #F87171;
+  }
+
+  .success-message {
+    background-color: #D1FAE5;
+    color: #065F46;
+    border: 1px solid #6EE7B7;
+  }
+
+  /* Tabs */
+  .tabs-container {
+    margin-bottom: 1.5rem;
+  }
+
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid #E5E7EB;
+    overflow-x: auto;
+  }
+
+  .tab {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6B7280;
+    border-bottom: 2px solid transparent;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .tab:hover {
+    color: #111827;
+  }
+
+  .tab.active {
+    color: #1D4ED8;
+    border-bottom-color: #1D4ED8;
+  }
+
+  /* Main content */
+  .page-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .card {
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #111827;
+  }
+
+  .section-description {
+    color: #6B7280;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Material filters */
+  .material-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #E5E7EB;
+    padding-bottom: 1rem;
+  }
+
+  .filter-btn {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    border-radius: 0.375rem;
+    background-color: #F3F4F6;
+    color: #4B5563;
+    border: 1px solid #E5E7EB;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover {
+    background-color: #E5E7EB;
+  }
+
+  .filter-btn.active {
+    background-color: #1D4ED8;
+    color: white;
+    border-color: #1D4ED8;
+  }
+
+  /* Material cards */
+  .material-card {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: all 0.2s;
+    margin-bottom: 1.5rem;
+  }
+
+  .material-card:hover {
+    border-color: #9CA3AF;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .material-header {
+    padding: 1rem;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  
+  .material-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.25rem 0;
+  }
+  
+  .material-description {
+    font-size: 0.875rem;
+    color: #4B5563;
+    margin: 0;
+  }
+  
+  .material-metadata {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.5rem 1rem;
+    gap: 1rem;
+    background-color: #F9FAFB;
+  }
+  
+  .metadata-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    color: #6B7280;
+  }
+
+  .material-actions {
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #E5E7EB;
+  }
+  
+  .view-btn {
+    padding: 0.375rem 0.75rem;
+    background-color: #1D4ED8;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .view-btn:hover {
+    background-color: #1E40AF;
+  }
+
+  /* AI content generator */
+  .ai-generator {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+  
+  .form-control {
+    padding: 0.5rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+  }
+  
+  .form-select {
+    padding: 0.5rem;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    background-color: white;
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .primary-btn {
+    padding: 0.5rem 1rem;
+    background-color: #1D4ED8;
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .primary-btn:hover {
+    background-color: #1E40AF;
+  }
+  
+  .secondary-btn {
+    padding: 0.5rem 1rem;
+    background-color: white;
+    color: #374151;
+    border: 1px solid #D1D5DB;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .secondary-btn:hover {
+    background-color: #F3F4F6;
+  }
+
+  /* Empty state */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    text-align: center;
+  }
+  
+  .empty-icon {
+    width: 3rem;
+    height: 3rem;
+    color: #9CA3AF;
+    margin-bottom: 1rem;
+  }
+  
+  .empty-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+  }
+  
+  .empty-description {
+    color: #6B7280;
+    max-width: 30rem;
+  }
+
+  /* Progress indicators */
+  .progress-container {
+    margin-bottom: 1.5rem;
+  }
+  
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+  
+  .progress-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+  
+  .progress-value {
+    font-size: 0.875rem;
+    color: #6B7280;
+  }
+  
+  .progress-bar-bg {
+    height: 0.5rem;
+    background-color: #E5E7EB;
+    border-radius: 0.25rem;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #1D4ED8;
+    transition: width 0.3s;
+  }
+
+  /* Study plan */
+  .study-plan-item {
+    display: flex;
+    padding: 1rem;
+    border: 1px solid #E5E7EB;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    margin-bottom: 1rem;
+  }
+  
+  .study-plan-item:hover {
+    border-color: #9CA3AF;
+    background-color: #F9FAFB;
+  }
+  
+  .study-plan-day {
+    font-weight: 600;
+    margin-right: 1.5rem;
+    min-width: 4rem;
+    color: #374151;
+  }
+  
+  .study-plan-content {
+    flex: 1;
+  }
+  
+  .study-item {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed #E5E7EB;
+  }
+  
+  .study-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+  
+  .study-item-title {
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 0.25rem;
+  }
+  
+  .study-item-time {
+    font-size: 0.75rem;
+    color: #6B7280;
+  }
+</style>
+
+<div class="adaptive-learning-container">
+  <!-- Header -->
+  <header class="page-header">
+    <div>
+      <h1 class="heading-txt">Adaptive Learning</h1>
+      <p class="content-text">Personalized learning materials based on your assessment results</p>
+    </div>
+    <div class="ml-auto">
+      <button type="button" (click)="goBackToAdaptiveLearning()" class="btn-outline">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px; height: 20px;">
+          <path d="M6 12H18M6 12L11 7M6 12L11 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Back to Adaptive Learning</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Loading state -->
+  <div *ngIf="loading()" class="loading-container">
+    <div class="loader"></div>
+    <p class="mt-4 text-gray-500">Loading adaptive learning content...</p>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="errorMessage() && !loading()" class="error-message">
+    {{ errorMessage() }}
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading() && !errorMessage()" class="content-container">
+    
+    <!-- Tabs -->
+    <div class="tabs-container">
+      <div class="tabs">
+        <button 
+          [class.active]="activeTab() === 'overview'" 
+          (click)="setActiveTab('overview')"
+          class="tab">
+          Overview
+        </button>
+        <button 
+          [class.active]="activeTab() === 'learning-materials'" 
+          (click)="setActiveTab('learning-materials')"
+          class="tab">
+          Learning Materials
+        </button>
+        <button 
+          [class.active]="activeTab() === 'study-plan'" 
+          (click)="setActiveTab('study-plan')"
+          class="tab">
+          Study Plan
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="page-content">
+      <!-- Overview Tab -->
+      <div *ngIf="activeTab() === 'overview'" class="tab-content">
+        <!-- Performance Overview Card -->
+        <div class="card">
+          <h2 class="section-title">Overall Score</h2>
+          <p *ngIf="adaptiveLearningResult()">{{ getOverallFeedback() }}</p>
+          
+          <!-- Progress bar for threshold -->
+          <div class="progress-container" *ngIf="adaptiveLearningResult()">
+            <div class="progress-label">
+              <span class="progress-text">Improvement Threshold: {{ improvementThreshold() }}%</span>
+            </div>
+            <div class="progress-bar-bg">
+              <div class="progress-bar" [style.width.%]="improvementThreshold()"></div>
+            </div>
+            <p class="progress-description mt-2 text-sm text-gray-600">
+              Sub-categories with scores below this threshold will be flagged for improvement
+            </p>
+          </div>
+        </div>
+        
+        <!-- Performance by Sub-Category Card -->
+        <div class="card">
+          <h2 class="section-title">Performance by Sub-Category</h2>
+          
+          <!-- List of subcategories with scores -->
+          <div *ngIf="adaptiveLearningResult() && adaptiveLearningResult()?.subCategories">
+            <div *ngFor="let subCategory of adaptiveLearningResult()?.subCategories" class="mb-6">
+              <h3 class="text-lg font-medium text-gray-800 mb-2">{{ subCategory.name }}</h3>
+              
+              <p class="mb-1">Score: {{ subCategory.score }}% ({{ subCategory.correctAnswers }}/{{ subCategory.totalQuestions }} correct)</p>
+              
+              <p [class.text-green-700]="subCategory.score >= improvementThreshold()"
+                 [class.text-red-700]="subCategory.score < improvementThreshold()"
+                 class="font-medium">
+                {{ getSubCategoryFeedback(subCategory) }}
+              </p>
+            </div>
+          </div>
+          
+          <!-- Empty state if no data -->
+          <div *ngIf="!adaptiveLearningResult() || !adaptiveLearningResult()?.subCategories || (adaptiveLearningResult()?.subCategories?.length === 0)" class="empty-state">
+          <div class="empty-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 class="empty-title">No performance data available</h3>
+            <p class="empty-description">Complete an assessment to see your performance breakdown.</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Learning Materials Tab -->
+      <div *ngIf="activeTab() === 'learning-materials'" class="tab-content">
+        <div class="card">
+          <h2 class="section-title">Recommended Learning Materials</h2>
+          <p class="section-description">Based on your assessment results, we've recommended the following materials to help you focus on.</p>
+          
+          <!-- Material filters -->
+          <div class="material-filters">
+            <button 
+              [class.active]="currentFilter() === 'all'" 
+              (click)="setFilter('all')" 
+              class="filter-btn">
+              All
+            </button>
+            <button 
+              [class.active]="currentFilter() === 'videos'" 
+              (click)="setFilter('videos')" 
+              class="filter-btn">
+              Videos
+            </button>
+            <button 
+              [class.active]="currentFilter() === 'pdfs'" 
+              (click)="setFilter('pdfs')" 
+              class="filter-btn">
+              PDFs
+            </button>
+            <button 
+              [class.active]="currentFilter() === 'articles'" 
+              (click)="setFilter('articles')" 
+              class="filter-btn">
+              Articles
+            </button>
+            <button 
+              [class.active]="currentFilter() === 'interactive'" 
+              (click)="setFilter('interactive')" 
+              class="filter-btn">
+              Interactive
+            </button>
+            <button 
+              [class.active]="currentFilter() === 'ai-generated'" 
+              (click)="setFilter('ai-generated')" 
+              class="filter-btn">
+              AI Generated
+            </button>
+          </div>
+          
+          <!-- Learning materials list -->
+          <div *ngIf="filteredMaterials().length > 0" class="materials-list">
+            <div *ngFor="let material of filteredMaterials()" class="material-card">
+              <div class="material-header">
+                <h3 class="material-title">{{ material.title }}</h3>
+                <p class="material-description">{{ material.description }}</p>
+              </div>
+              
+              <div class="material-metadata">
+                <div class="metadata-item">
+                  <span>{{ material.category }}</span>
+                </div>
+                <div class="metadata-item">
+                  <span>{{ material.level }}</span>
+                </div>
+                <div class="metadata-item">
+                  <span>{{ material.duration }} min</span>
+                </div>
+              </div>
+              
+              <div class="material-actions">
+                <button class="view-btn" (click)="viewMaterial(material)">View</button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Empty state -->
+          <div *ngIf="filteredMaterials().length === 0" class="empty-state">
+            <div class="empty-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+            </div>
+            <h3 class="empty-title">No learning materials found</h3>
+            <p class="empty-description">No materials match your current filter. Try selecting a different filter or generate custom content below.</p>
+          </div>
+        </div>
+        
+        <!-- AI Content Generator -->
+        <div class="card">
+          <h2 class="section-title">Generate Custom Learning Content</h2>
+          
+          <div class="ai-generator">
+            <div class="form-group">
+              <label class="form-label">Difficulty Level</label>
+              <select class="form-select" [(ngModel)]="aiGenerationForm.difficultyLevel">
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Content Type</label>
+              <select class="form-select" [(ngModel)]="aiGenerationForm.contentType">
+                <option value="explanation">Explanations</option>
+                <option value="tutorial">Tutorial</option>
+                <option value="examples">Examples</option>
+                <option value="quiz">Quiz</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Keywords (optional, comma-separated)</label>
+              <input type="text" class="form-control" [(ngModel)]="aiGenerationForm.keywords" placeholder="Enter specific topics or concepts">
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" class="primary-btn" (click)="generateAIContent()">Generate AI Content</button>
+              <button type="button" class="secondary-btn" (click)="searchLibrary()">Search Library</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Study Plan Tab -->
+      <div *ngIf="activeTab() === 'study-plan'" class="tab-content">
+        <div class="card">
+          <h2 class="section-title">Personalized Study Plan</h2>
+          
+          <div *ngIf="studyPlan() && studyPlan().length > 0" class="study-plan">
+            <div *ngFor="let day of studyPlan()" class="study-plan-item">
+              <div class="study-plan-day">
+                {{ day.day }}
+              </div>
+              <div class="study-plan-content">
+                <div *ngFor="let item of day.items" class="study-item">
+                  <div class="study-item-title">{{ item.title }}</div>
+                  <div class="study-item-time">{{ item.duration }} minutes</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Empty state -->
+          <div *ngIf="!studyPlan() || studyPlan().length === 0" class="empty-state">
+            <div class="empty-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <h3 class="empty-title">No study plan available</h3>
+            <p class="empty-description">Complete an assessment to generate a personalized study plan.</p>
+            <button *ngIf="adaptiveLearningResult()" (click)="generateStudyPlan()" class="primary-btn mt-4">Generate Study Plan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

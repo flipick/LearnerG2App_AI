@@ -1,0 +1,123 @@
+<!-- Splash Screen -->
+<app-adaptive-learning-splash 
+  *ngIf="showSplash()"
+  (close)="closeSplash()">
+</app-adaptive-learning-splash>
+
+<div class="dashboard-container">
+  <!-- Header -->
+  <div class="dashboard-header">
+    <h1>Adaptive Learning</h1>
+    <p>Personalized learning experiences based on your assessment results</p>
+  </div>
+  
+  <!-- Loading state -->
+  <div *ngIf="loading()" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Loading adaptive learning assessments...</p>
+  </div>
+  
+  <!-- Error message -->
+  <div *ngIf="errorMessage() && !loading()" class="error-message">
+    {{ errorMessage() }}
+  </div>
+  
+  <!-- Content when loaded -->
+  <div *ngIf="!loading() && !errorMessage()" class="dashboard-content">
+    
+    <!-- Recent Results Section -->
+    <div *ngIf="recentResults().length > 0" class="section results-section">
+      <h2>Recent Assessment Results</h2>
+      
+      <div class="cards-grid">
+        <div *ngFor="let result of recentResults()" class="result-card" (click)="viewAdaptiveLearning(result.assessmentId)">
+          <div class="card-header">
+            <h3>{{ result.assessmentTitle }}</h3>
+            <span class="score-badge" [ngClass]="getScoreClass(result.score)">{{ result.score }}%</span>
+          </div>
+          
+          <div class="card-body">
+            <p class="completion-date">Completed on {{ result.completionDate }}</p>
+            
+            <div class="weak-areas">
+              <h4>Areas for Improvement:</h4>
+              <ul>
+                <li *ngFor="let area of result.weakAreas">{{ area }}</li>
+              </ul>
+            </div>
+            
+            <p class="materials-count">{{ result.recommendedMaterialsCount }} learning materials available</p>
+          </div>
+          
+          <div class="card-footer">
+            <button class="action-button">View Learning Materials</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Available Assessments Section -->
+    <div class="section assessments-section">
+      <h2>Available Assessments</h2>
+      
+      <div class="cards-grid">
+        <div *ngFor="let assessment of adaptiveAssessments()" class="assessment-card">
+          <div class="card-header">
+            <h3>{{ assessment.assessmentTitle }}</h3>
+            <span class="status-badge" [ngClass]="getStatusClass(assessment.status)">{{ assessment.status }}</span>
+          </div>
+          
+          <div class="card-body">
+            <p class="description">{{ assessment.description }}</p>
+            
+            <div class="assessment-details">
+              <div class="detail-item">
+                <span class="detail-label">Type:</span>
+                <span class="detail-value">{{ assessment.assessmentType }}</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">Passing Score:</span>
+                <span class="detail-value">{{ assessment.passingScore }}%</span>
+              </div>
+              
+              <div class="detail-item">
+                <span class="detail-label">Time Limit:</span>
+                <span class="detail-value">{{ assessment.timeLimitInMinutes }} minutes</span>
+              </div>
+            </div>
+            
+            <!-- For assessments with best score (attempted assessments) -->
+            <div *ngIf="assessment.attempted && assessment.attempted !== '0'" class="completion-info">
+              <p>Best Score: {{ assessment.bestScore }}%</p>
+            </div>
+          </div>
+          
+          <div class="card-footer">
+            <button *ngIf="assessment.attempted && assessment.attempted !== '0'"
+                    class="action-button" 
+                    (click)="viewAdaptiveLearning(assessment.assessmentId); $event.stopPropagation();">
+              View Learning Materials
+            </button>
+            
+            <button *ngIf="!assessment.attempted || assessment.attempted === '0'" 
+                    class="action-button" 
+                    (click)="startAssessment(assessment.assessmentId); $event.stopPropagation();">
+              Start Assessment
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Empty state -->
+    <div *ngIf="adaptiveAssessments().length === 0" class="empty-state">
+      <svg class="empty-icon" viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.589-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+        <path d="M14.828 9.172a.999.999 0 0 0-1.414 0l-1.414 1.414-1.414-1.414a.999.999 0 1 0-1.414 1.414l1.414 1.414-1.414 1.414a.999.999 0 1 0 1.414 1.414l1.414-1.414 1.414 1.414a.999.999 0 1 0 1.414-1.414l-1.414-1.414 1.414-1.414a.999.999 0 0 0 0-1.414z" />
+      </svg>
+      <h3>No adaptive assessments available</h3>
+      <p>Check back later for new assessments with adaptive learning.</p>
+    </div>
+  </div>
+</div>
